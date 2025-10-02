@@ -108,12 +108,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error('Error sending email:', error);
     
     // More specific error messages
-    if (error.code === 'EAUTH') {
-      return res.status(500).json({ message: 'Email authentication failed. Please check credentials.' });
-    } else if (error.code === 'ECONNECTION') {
-      return res.status(500).json({ message: 'Connection to email server failed.' });
+    if (error instanceof Error) {
+      if ('code' in error && error.code === 'EAUTH') {
+        return res.status(500).json({ message: 'Email authentication failed. Please check credentials.' });
+      } else if ('code' in error && error.code === 'ECONNECTION') {
+        return res.status(500).json({ message: 'Connection to email server failed.' });
+      } else {
+        return res.status(500).json({ message: `Failed to send email: ${error.message}` });
+      }
     } else {
-      return res.status(500).json({ message: `Failed to send email: ${error.message}` });
+      return res.status(500).json({ message: 'Failed to send email: Unknown error occurred' });
     }
   }
 }
