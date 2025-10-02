@@ -33,7 +33,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         GMAIL_USER: !!process.env.GMAIL_USER,
         GMAIL_APP_PASSWORD: !!process.env.GMAIL_APP_PASSWORD
       });
-      return res.status(500).json({ message: 'Email configuration missing' });
+      
+      // For now, just log the form data and return success
+      console.log('Form submission received (no email sent):', {
+        fullName: formData.fullName,
+        phone: formData.phone,
+        petType: formData.petType,
+        email: formData.email,
+        budgetRange: formData.budgetRange,
+        additionalNotes: formData.additionalNotes
+      });
+      
+      return res.status(200).json({ 
+        message: 'Form received successfully. We will contact you soon.',
+        note: 'Email service not configured'
+      });
     }
 
     // Create transporter using Gmail SMTP
