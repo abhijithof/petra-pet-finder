@@ -392,7 +392,7 @@ const FindYourPetForm: React.FC = () => {
                   }}
                 />
                 <div className="flex justify-between text-xs text-gray-500 mt-2">
-                  <span>₹10K</span>
+                  <span>₹100</span>
                   <span>₹2L</span>
                 </div>
               </div>
