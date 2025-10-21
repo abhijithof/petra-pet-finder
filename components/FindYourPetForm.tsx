@@ -381,7 +381,7 @@ const FindYourPetForm: React.FC = () => {
                   type="range"
                   id="budgetRange"
                   name="budgetRange"
-                  min="10000"
+                  min="100"
                   max="200000"
                   step="5000"
                   value={formData.budgetRange}
