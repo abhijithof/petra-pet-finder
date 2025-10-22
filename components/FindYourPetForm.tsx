@@ -75,16 +75,18 @@ const FindYourPetForm: React.FC = () => {
   // Confetti effect
   useEffect(() => {
     if (showConfetti) {
-      const timer = setTimeout(() => setShowConfetti(false), 3000);
+      const timer = setTimeout(() => setShowConfetti(false), 6000);
       return () => clearTimeout(timer);
     }
   }, [showConfetti]);
 
   const triggerConfetti = () => {
     setShowConfetti(true);
-    // Create confetti elements
+    // Create confetti elements with staggered timing
     for (let i = 0; i < 50; i++) {
-      createConfetti();
+      setTimeout(() => {
+        createConfetti();
+      }, i * 50); // Stagger confetti creation by 50ms each
     }
   };
 
@@ -99,13 +101,13 @@ const FindYourPetForm: React.FC = () => {
     confetti.style.borderRadius = '50%';
     confetti.style.pointerEvents = 'none';
     confetti.style.zIndex = '9999';
-    confetti.style.animation = 'confetti-fall 3s linear forwards';
+    confetti.style.animation = 'confetti-fall 5s ease-out forwards';
     
     document.body.appendChild(confetti);
     
     setTimeout(() => {
       confetti.remove();
-    }, 3000);
+    }, 5000);
   };
 
   const nextStep = () => {
@@ -660,7 +662,7 @@ const FindYourPetForm: React.FC = () => {
         {/* Success Popup */}
         {showSuccessPopup && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 text-center animate-bounce">
+            <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 text-center transform transition-all duration-300 ease-out">
               <div className="text-6xl mb-4">🎉</div>
               <h3 className="text-2xl font-bold text-gray-800 mb-2">Congratulations!</h3>
               <p className="text-gray-600 mb-6">
@@ -685,8 +687,11 @@ const FindYourPetForm: React.FC = () => {
                   transform: translateY(-100vh) rotate(0deg);
                   opacity: 1;
                 }
+                50% {
+                  opacity: 0.8;
+                }
                 100% {
-                  transform: translateY(100vh) rotate(720deg);
+                  transform: translateY(100vh) rotate(360deg);
                   opacity: 0;
                 }
               }
