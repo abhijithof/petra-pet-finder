@@ -370,30 +370,49 @@ const FindYourPetForm: React.FC = () => {
               </div>
             </div>
 
-            {/* Budget Range Slider */}
+            {/* Budget Range */}
             <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <label className="text-sm font-medium text-gray-700">Budget Range</label>
-                <span className="text-lg font-bold" style={{ color: '#30358B' }}>{formatCurrency(formData.budgetRange)}</span>
+              <label className="text-sm font-medium text-gray-700">Budget Range</label>
+              
+              {/* Pre-built Price Buttons */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[10000, 20000, 50000, 100000].map((price) => (
+                  <button
+                    key={price}
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, budgetRange: price }))}
+                    className={`p-3 rounded-xl border-2 transition-all duration-200 ${
+                      formData.budgetRange === price
+                        ? 'border-purple-500 bg-purple-50 text-purple-700'
+                        : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="text-center">
+                      <div className="text-sm font-medium">{formatCurrency(price)}</div>
+                    </div>
+                  </button>
+                ))}
               </div>
-              <div className="px-2">
-                <input
-                  type="range"
-                  id="budgetRange"
-                  name="budgetRange"
-                  min="100"
-                  max="200000"
-                  step="5000"
-                  value={formData.budgetRange}
-                  onChange={handleInputChange}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                  style={{
-                    background: `linear-gradient(to right, #30358B 0%, #30358B ${((formData.budgetRange - 10000) / (200000 - 10000)) * 100}%, #E5E7EB ${((formData.budgetRange - 10000) / (200000 - 10000)) * 100}%, #E5E7EB 100%)`
-                  }}
-                />
-                <div className="flex justify-between text-xs text-gray-500 mt-2">
-                  <span>₹100</span>
-                  <span>₹2L</span>
+              
+              {/* Custom Price Input */}
+              <div className="space-y-2">
+                <label htmlFor="budgetRange" className="text-sm font-medium text-gray-700">
+                  Or enter custom amount
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
+                  <input
+                    type="number"
+                    id="budgetRange"
+                    name="budgetRange"
+                    value={formData.budgetRange}
+                    onChange={handleInputChange}
+                    min="1000"
+                    max="500000"
+                    step="1000"
+                    className="w-full pl-8 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 placeholder-gray-400"
+                    placeholder="Enter amount"
+                  />
                 </div>
               </div>
             </div>
