@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const formData: FormData = req.body;
 
     // Validate required fields
-    if (!formData.fullName || !formData.phone || !formData.petType) {
+    if (!formData.fullName || !formData.phone || !formData.petType || !formData.breedSizePreference || !formData.agePreference || !formData.budgetRange || !formData.additionalNotes) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
