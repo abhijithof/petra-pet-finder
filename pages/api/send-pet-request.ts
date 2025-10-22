@@ -7,6 +7,7 @@ interface FormData {
   phone: string;
   petType: string;
   breedSizePreference: string;
+  genderPreference: string;
   agePreference: string;
   budgetRange: number;
   location: string;
@@ -23,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const formData: FormData = req.body;
 
     // Validate required fields
-    if (!formData.fullName || !formData.phone || !formData.petType || !formData.breedSizePreference || !formData.agePreference || !formData.budgetRange || !formData.additionalNotes) {
+    if (!formData.fullName || !formData.phone || !formData.petType || !formData.breedSizePreference || !formData.genderPreference || !formData.agePreference || !formData.budgetRange || !formData.additionalNotes) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
@@ -76,13 +77,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           <p><strong>Location:</strong> ${formData.location || 'Not specified'}</p>
         </div>
 
-        <div style="background-color: #F0FDF4; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="color: #374151; margin-top: 0;">Pet Preferences</h3>
-          <p><strong>Pet Type:</strong> ${formData.petType}</p>
-          <p><strong>Breed/Size:</strong> ${formData.breedSizePreference || 'Not specified'}</p>
-          <p><strong>Age Preference:</strong> ${formData.agePreference || 'Not specified'}</p>
-          <p><strong>Budget Range:</strong> ₹${formData.budgetRange?.toLocaleString('en-IN') || 'Not specified'}</p>
-        </div>
+            <div style="background-color: #F0FDF4; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="color: #374151; margin-top: 0;">Pet Preferences</h3>
+              <p><strong>Pet Type:</strong> ${formData.petType}</p>
+              <p><strong>Breed/Size:</strong> ${formData.breedSizePreference || 'Not specified'}</p>
+              <p><strong>Gender Preference:</strong> ${formData.genderPreference || 'Not specified'}</p>
+              <p><strong>Age Preference:</strong> ${formData.agePreference || 'Not specified'}</p>
+              <p><strong>Budget Range:</strong> ₹${formData.budgetRange?.toLocaleString('en-IN') || 'Not specified'}</p>
+            </div>
 
         ${formData.additionalNotes ? `
         <div style="background-color: #FEF3C7; padding: 20px; border-radius: 8px; margin: 20px 0;">
