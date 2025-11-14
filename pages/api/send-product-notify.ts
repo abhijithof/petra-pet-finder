@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 
+type ProductType = 'Food' | 'Accessories' | 'Health';
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -9,7 +11,7 @@ export default async function handler(
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { email, product } = req.body;
+  const { email, product } = req.body as { email: string; product: ProductType };
 
   // Validate required fields
   if (!email || !product) {
@@ -44,11 +46,13 @@ export default async function handler(
     });
 
     // Determine product details
-    const productDetails = {
+    const productDetailsMap: Record<ProductType, { emoji: string; description: string }> = {
       'Food': { emoji: '🍖', description: 'Premium nutrition for every life stage' },
       'Accessories': { emoji: '🎾', description: 'Quality toys, collars, beds & more' },
       'Health': { emoji: '💊', description: 'Supplements, vitamins & care products' },
-    }[product] || { emoji: '🛍️', description: 'Premium pet products' };
+    };
+    
+    const productDetails = productDetailsMap[product] || { emoji: '🛍️', description: 'Premium pet products' };
 
     // Email content
     const subject = `${productDetails.emoji} New Product Interest – ${product}`;
@@ -56,7 +60,7 @@ export default async function handler(
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="text-align: center; margin-bottom: 20px;">
-          <img src="https://thePet.Ra's.in/Pet.Ra's-logo-blue-2.png" alt="Pet.Ra's" style="width: 150px; height: auto;" />
+          <img src="https://thepetra.in/petra-logo-blue-2.png" alt="Pet.Ra" style="width: 150px; height: auto;" />
         </div>
         <h2 style="color: #171739; border-bottom: 2px solid #FFD447; padding-bottom: 10px;">
           ${productDetails.emoji} New Product Notification Request
@@ -82,7 +86,7 @@ export default async function handler(
         
         <p style="color: #6B7280; font-size: 14px; margin: 0;">
           Submitted at: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}<br/>
-          This request was submitted through Pet.Ra's Product Notification form.
+          This request was submitted through Pet.Ra Product Notification form.
         </p>
       </div>
     `;
@@ -90,7 +94,7 @@ export default async function handler(
     // Send email to admin
     const adminMailOptions = {
       from: process.env.GMAIL_USER,
-      to: 'Pet.Ra'sgroupofficial@gmail.com',
+      to: 'Petragroupofficial@gmail.com',
       replyTo: email,
       subject: subject,
       html: htmlContent,
@@ -105,7 +109,7 @@ export default async function handler(
     const customerHtmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="text-align: center; margin-bottom: 30px;">
-          <img src="https://thePet.Ra's.in/Pet.Ra's-logo-blue-2.png" alt="Pet.Ra's" style="width: 180px; height: auto;" />
+          <img src="https://thepetra.in/petra-logo-blue-2.png" alt="Pet.Ra" style="width: 180px; height: auto;" />
         </div>
 
         <h2 style="color: #171739; margin-bottom: 20px;">
@@ -135,12 +139,12 @@ export default async function handler(
         </div>
 
         <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #E5E7EB; text-align: center;">
-          <img src="https://thePet.Ra's.in/Pet.Ra's-logo-blue-2.png" alt="Pet.Ra's" style="width: 120px; height: auto; margin-bottom: 15px;" />
+          <img src="https://thepetra.in/petra-logo-blue-2.png" alt="Pet.Ra" style="width: 120px; height: auto; margin-bottom: 15px;" />
           <p style="color: #6B7280; font-size: 14px; margin: 0;">
-            Have questions? Reply to this email or reach us at <a href="mailto:hello@thePet.Ra's.in" style="color: #FFD447; text-decoration: none;">hello@thePet.Ra's.in</a>
+            Have questions? Reply to this email or reach us at <a href="mailto:Petragroupofficial@gmail.com" style="color: #FFD447; text-decoration: none;">Petragroupofficial@gmail.com</a>
           </p>
           <p style="color: #6B7280; font-size: 14px; margin: 10px 0 0 0;">
-            <strong style="color: #171739;">Team Pet.Ra's</strong><br/>
+            <strong style="color: #171739;">Team Pet.Ra</strong><br/>
             Finding perfect pets, responsibly.
           </p>
         </div>
