@@ -40,45 +40,62 @@ export default function AdminPanel() {
       subheadline: 'Every pet comes from screened, ethical breeders with verified health records. We connect you with the right companion for your family.',
       trustLine: 'Loved by responsible pet parents. Every pet is breeder-verified.',
       ctaPrimary: 'Start Pet Finder',
-      ctaSecondary: 'View Available Pets',
-      heroImage: '/hero-pets.jpg'
+      ctaSecondary: 'Join Subscription Waitlist',
+      heroImage: '/noelle-hkk_YVE2EG0-unsplash.jpg'
     },
     trustBadges: [
-      { title: 'Verified Breeders', description: 'We verify breeder & seller credentials.' },
-      { title: 'Health-Checked', description: 'Vaccination & health records required.' },
-      { title: '24-hr Match Guarantee', description: 'We commit to delivering verified matches within 24 hours.' },
-      { title: 'Secure Payments', description: 'Safe, transparent transactions.' }
+      { title: 'Verified Breeders', description: 'We screen every breeder for ethics, health standards, and proper care practices.' },
+      { title: 'Health Guarantee', description: 'All pets come with complete medical records, vaccination history, and health certificates.' },
+      { title: '24-hr Match Guarantee', description: 'We find the right pet based on your lifestyle, preferences, and living situation.' },
+      { title: 'Secure Payments', description: 'Fully protected transactions with transparent pricing and no hidden fees.' }
     ],
     testimonials: [
       {
-        name: 'Priya & Raj',
-        location: 'Kochi',
+        name: 'Priya Anandh',
+        location: 'Edappaly',
         quote: 'Pet.Ra found us a Golden Retriever in 18 hours. The breeder was verified, and Bruno is healthy and happy!'
       },
       {
-        name: 'Anjali M.',
-        location: 'Ernakulam',
-        quote: 'As a first-time pet parent, Pet.Ras guidance was invaluable. Found the perfect Beagle for our family!'
+        name: 'Rohan Riju',
+        location: 'Palarivattom',
+        quote: 'Amazing service! Got 4 Persian kitten profiles with complete health records. Very professional.'
+      },
+      {
+        name: 'Max V',
+        location: 'Koonammavu',
+        quote: 'As a first-time pet parent, Pet.Ra\'s guidance was invaluable. Found the perfect Beagle for our family!'
       }
     ],
     subscriptionPlans: [
       {
-        name: 'Starter',
-        price: '₹299/mo',
-        features: ['1 vet consult/month', 'Free priority Pet Finder access', '2 requests/month'],
+        name: 'Wag Essentials (Dogs)',
+        price: '₹1,599 / ₹1,699 / ₹1,799 (S/M/L)',
+        features: ['Pure Paws Essentials Grooming Pack', '5% Discount at all partner stores', '30 Minute walks each by trusted agents'],
         highlighted: false
       },
       {
-        name: 'Active',
-        price: '₹699/mo',
-        features: ['Grooming credit', '2 vet consults', 'Essentials box', 'Priority support'],
+        name: 'Wag Plus (Dogs)',
+        price: '₹4,299 / ₹4,399 / ₹4,599 (S/M/L)',
+        features: ['8 walks/month of 30 minute each', 'Gloss & Glow Grooming Pack', '10% Discount at all partner stores', 'Classic Delight hamper box (₹600+)', 'Televet consultation (2x)', 'Clinic visit (1x)'],
         highlighted: true
       },
       {
-        name: 'Premium',
-        price: '₹1499/mo',
-        features: ['Priority Pet Finder', '24/7 support', 'Premium box', 'Exclusive discounts'],
+        name: 'Wag Elite (Dogs)',
+        price: '₹6,099 / ₹6,299 / ₹6,599 (S/M/L)',
+        features: ['12 walks/month of 30 minute each', 'Radiance Royale Grooming Pack', '12% Discount at all partner stores', 'Deluxe Delight hamper box (₹1000+)', 'Televet consultation (1x)', 'Clinic visit (1x)', 'Pickup Service (1x)'],
         highlighted: false
+      },
+      {
+        name: 'Purr Basic (Cats)',
+        price: '₹2,699',
+        features: ['Beginner-Friendly Pack', 'Gloss & Glow Grooming Pack', '10% Discount at all partner stores', 'Classic Delight hamper box (₹600+)', 'Televet consultation (1x)', 'Clinic visit (1x)'],
+        highlighted: false
+      },
+      {
+        name: 'Purr Advanced (Cats)',
+        price: '₹4,699',
+        features: ['Advanced care for higher-end cats', 'Radiance Royale Grooming Pack', '12% Discount at all partner stores', 'Deluxe Delight hamper box (₹1000+)', 'Televet consultation (1x)', 'Clinic visit (1x)', 'Pickup Service (1x)'],
+        highlighted: true
       }
     ]
   });
@@ -157,12 +174,12 @@ export default function AdminPanel() {
     return (
       <>
         <Head>
-          <title>Admin Login - Pet.Ra's</title>
+          <title>Admin Login - Pet.Ra</title>
         </Head>
         <div className="min-h-screen bg-gradient-to-br from-[#171739] to-[#252756] flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md">
             <div className="text-center mb-8">
-              <img src="/Pet.Ra's-logo-blue-2.png" alt="Pet.Ra's" className="h-16 mx-auto mb-4" />
+              <img src="/petra-logo-blue-2.png" alt="Pet.Ra" className="h-16 mx-auto mb-4" />
               <h1 className="text-3xl font-bold text-[#171739]">Admin Panel</h1>
               <p className="text-gray-600 mt-2">Enter password to continue</p>
             </div>
@@ -197,7 +214,7 @@ export default function AdminPanel() {
   return (
     <>
       <Head>
-        <title>Admin Panel - Pet.Ra's Content Management</title>
+        <title>Admin Panel - Pet.Ra Content Management</title>
       </Head>
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
@@ -205,9 +222,9 @@ export default function AdminPanel() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <img src="/Pet.Ra's-logo-blue-2.png" alt="Pet.Ra's" className="h-10 invert" />
+                <img src="/petra-logo-blue-2.png" alt="Pet.Ra" className="h-10 brightness-0 invert" />
                 <div>
-                  <h1 className="text-2xl font-bold">Pet.Ra's Admin Panel</h1>
+                  <h1 className="text-2xl font-bold">Pet.Ra Admin Panel</h1>
                   <p className="text-sm text-gray-300">Content Management System</p>
                 </div>
               </div>
@@ -565,7 +582,7 @@ export default function AdminPanel() {
                 <div className="p-6 bg-gray-50 rounded-xl">
                   <h3 className="font-semibold text-[#171739] mb-2">📧 Email Notifications</h3>
                   <p className="text-sm text-gray-600">
-                    All pet finder submissions are sent to: <strong>Pet.Ra'sgroupofficial@gmail.com</strong>
+                    All pet finder submissions are sent to: <strong>Petragroupofficial@gmail.com</strong>
                   </p>
                 </div>
               </div>
@@ -577,7 +594,7 @@ export default function AdminPanel() {
         {/* Footer */}
         <div className="border-t border-gray-200 mt-12 py-6">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
-            <p>© 2025 Pet.Ra's Admin Panel - Content Management System</p>
+            <p>© 2025 Pet.Ra Admin Panel - Content Management System</p>
           </div>
         </div>
       </div>
