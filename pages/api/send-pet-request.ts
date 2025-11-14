@@ -102,7 +102,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         <hr style="margin: 30px 0; border: none; border-top: 1px solid #E5E7EB;">
         
         <p style="color: #6B7280; font-size: 14px; margin: 0;">
-          This request was submitted through Petra's Pet Finder form.
+          This request was submitted through Pet.Ra's Pet Finder form.
         </p>
       </div>
     `;
@@ -110,7 +110,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Send email
     const mailOptions = {
       from: process.env.GMAIL_USER,
-      to: 'petragroupofficial@gmail.com',
+      to: 'Petragroupofficial@gmail.com',
       subject: subject,
       html: htmlContent,
     };
@@ -118,6 +118,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log('Attempting to send email...');
     const result = await transporter.sendMail(mailOptions);
     console.log('Email sent successfully:', result.messageId);
+
+    // Send to Google Sheets if URL is configured
+    if (process.env.GOOGLE_SHEET_PET_FINDER_URL) {
+      try {
+        const sheetData = {
+          name: formData.fullName,
+          email: formData.email || '',
+          phone: formData.phone,
+          city: formData.location || 'Kochi',
+          petType: formData.petType,
+          breed: formData.breedSizePreference || '',
+          ageRange: formData.agePreference || '',
+          budget: `₹${formData.budgetRange?.toLocaleString('en-IN') || 0}`,
+          temperament: '', // Not captured in current form structure
+          notes: formData.additionalNotes || ''
+        };
+
+        await fetch(process.env.GOOGLE_SHEET_PET_FINDER_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(sheetData)
+        });
+        console.log('Data sent to Google Sheets successfully');
+      } catch (sheetError) {
+        console.error('Failed to send to Google Sheets:', sheetError);
+        // Don't fail the request if Google Sheets fails
+      }
+    }
 
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {

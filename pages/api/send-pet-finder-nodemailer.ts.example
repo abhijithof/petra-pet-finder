@@ -1,0 +1,149 @@
+import type { NextApiRequest, NextApiResponse } from 'next';
+import nodemailer from 'nodemailer';
+
+/**
+ * Alternative implementation using Nodemailer (already installed)
+ * 
+ * To use this:
+ * 1. Rename this file from .example to .ts
+ * 2. Replace pages/api/send-pet-finder.ts with this file
+ * 3. Add SMTP credentials to .env.local
+ * 
+ * Required environment variables:
+ * - SMTP_HOST (e.g., smtp.gmail.com)
+ * - SMTP_PORT (e.g., 587)
+ * - SMTP_USER (your email)
+ * - SMTP_PASSWORD (your app password)
+ * - ADMIN_EMAIL (where form submissions go)
+ */
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
+
+  const { name, email, phone, city, petType, breed, ageRange, budget, temperament, notes } = req.body;
+
+  // Validate required fields
+  if (!name || !email || !city || !petType || !ageRange || !budget) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  try {
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_PORT === '465', // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+      },
+    });
+
+    // Email to admin
+    await transporter.sendMail({
+      from: `"Pet.Ra's Pet Finder" <${process.env.SMTP_USER}>`,
+      to: process.env.ADMIN_EMAIL || 'hello@thePet.Ra's.in',
+      replyTo: email,
+      subject: `New Pet Finder Request from ${name}`,
+      text: `
+        New Pet Finder Request
+        
+        Contact Information:
+        - Name: ${name}
+        - Email: ${email}
+        - Phone: ${phone || 'Not provided'}
+        - City: ${city}
+        
+        Pet Preferences:
+        - Pet Type: ${petType}
+        - Breed Preference: ${breed || 'Not specified'}
+        - Age Range: ${ageRange}
+        - Budget: ₹${budget}
+        - Temperament: ${temperament && temperament.length > 0 ? temperament.join(', ') : 'Not specified'}
+        
+        Additional Notes:
+        ${notes || 'None'}
+        
+        ---
+        Submitted at: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+      `,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px;">
+          <h2 style="color: #171739;">New Pet Finder Request</h2>
+          
+          <h3 style="color: #FFD447;">Contact Information</h3>
+          <ul>
+            <li><strong>Name:</strong> ${name}</li>
+            <li><strong>Email:</strong> ${email}</li>
+            <li><strong>Phone:</strong> ${phone || 'Not provided'}</li>
+            <li><strong>City:</strong> ${city}</li>
+          </ul>
+          
+          <h3 style="color: #FFD447;">Pet Preferences</h3>
+          <ul>
+            <li><strong>Pet Type:</strong> ${petType}</li>
+            <li><strong>Breed:</strong> ${breed || 'Not specified'}</li>
+            <li><strong>Age Range:</strong> ${ageRange}</li>
+            <li><strong>Budget:</strong> ₹${budget}</li>
+            <li><strong>Temperament:</strong> ${temperament && temperament.length > 0 ? temperament.join(', ') : 'Not specified'}</li>
+          </ul>
+          
+          <h3 style="color: #FFD447;">Additional Notes</h3>
+          <p>${notes || 'None'}</p>
+          
+          <hr style="margin: 20px 0;"/>
+          <p style="color: #666; font-size: 12px;">
+            Submitted at: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+          </p>
+        </div>
+      `,
+    });
+
+    // Confirmation email to customer
+    await transporter.sendMail({
+      from: `"Pet.Ra's Pet Finder" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: 'We received your Pet Finder request!',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #171739;">Thanks for your request, ${name}!</h2>
+          <p style="color: #666; line-height: 1.6;">
+            We've received your Pet Finder request and our team is already working on finding the perfect pet for you.
+          </p>
+          <p style="color: #666; line-height: 1.6;">
+            You'll receive curated pet matches within <strong>24 hours</strong> at this email address.
+          </p>
+          <div style="background: #FFF9F1; border-left: 4px solid #FFD447; padding: 15px; margin: 20px 0;">
+            <p style="margin: 0; color: #171739;">
+              <strong>What happens next?</strong><br/>
+              Our team will verify breeders, check health records, and send you 3-5 curated pet profiles that match your requirements.
+            </p>
+          </div>
+          <p style="color: #666;">
+            Best regards,<br/>
+            <strong>Team Pet.Ra's</strong>
+          </p>
+        </div>
+      `,
+    });
+
+    return res.status(200).json({ 
+      success: true, 
+      message: 'Pet finder request received successfully',
+      data: { name, email, petType }
+    });
+
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Failed to process request. Please try again.' 
+    });
+  }
+}
+

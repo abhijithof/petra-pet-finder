@@ -1,0 +1,74 @@
+{
+  "hero": {
+    "headline": "Find your perfect pet — safely, responsibly, in 24 hours.",
+    "subheadline": "Every pet comes from screened, ethical breeders with verified health records. We connect you with the right companion for your family.",
+    "trustLine": "Loved by responsible pet parents. Every pet is breeder-verified.",
+    "ctaPrimary": "Start Pet Finder",
+    "ctaSecondary": "View Available Pets",
+    "heroImage": "/hero-pets.jpg"
+  },
+  "trustBadges": [
+    {
+      "title": "Verified Breeders",
+      "description": "We verify breeder & seller credentials."
+    },
+    {
+      "title": "Health-Checked",
+      "description": "Vaccination & health records required."
+    },
+    {
+      "title": "24-hr Match Guarantee",
+      "description": "We commit to delivering verified matches within 24 hours."
+    },
+    {
+      "title": "Secure Payments",
+      "description": "Safe, transparent transactions."
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "Priya & Raj",
+      "location": "Kochi",
+      "quote": "Pet.Ra's found us a Golden Retriever in 18 hours. The breeder was verified, and Bruno is healthy and happy!"
+    },
+    {
+      "name": "Anjali M.",
+      "location": "Ernakulam",
+      "quote": "As a first-time pet parent, Pet.Ra's guidance was invaluable. Found the perfect Beagle for our family!"
+    }
+  ],
+  "subscriptionPlans": [
+    {
+      "name": "Starter",
+      "price": "₹299/mo",
+      "features": [
+        "1 vet consult/month",
+        "Free priority Pet Finder access",
+        "2 requests/month"
+      ],
+      "highlighted": false
+    },
+    {
+      "name": "Active",
+      "price": "₹699/mo",
+      "features": [
+        "Grooming credit",
+        "2 vet consults",
+        "Essentials box",
+        "Priority support"
+      ],
+      "highlighted": true
+    },
+    {
+      "name": "Premium",
+      "price": "₹1499/mo",
+      "features": [
+        "Priority Pet Finder",
+        "24/7 support",
+        "Premium box",
+        "Exclusive discounts"
+      ],
+      "highlighted": false
+    }
+  ]
+}

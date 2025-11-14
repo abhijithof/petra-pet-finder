@@ -1,11 +1,11 @@
-# Petra Pet Finder Form
+# Pet.Ra's Pet Finder Form
 
-A fully responsive React + Tailwind form component for Petra's website that allows users to request a pet and sends submissions via email.
+A fully responsive React + Tailwind form component for Pet.Ra's website that allows users to request a pet and sends submissions via email.
 
 ## Features
 
 - 🎨 **Fully Responsive Design**: Works perfectly on desktop and mobile
-- 📧 **Email Integration**: Sends form submissions to petragroupofficial@gmail.com
+- 📧 **Email Integration**: Sends form submissions to Pet.Ra'sgroupofficial@gmail.com
 - ⚡ **Real-time Validation**: Client-side form validation
 - 🎯 **User-friendly UI**: Clean, modern design with Tailwind CSS
 - 📱 **Mobile-first**: Optimized for all screen sizes
@@ -44,7 +44,7 @@ npm install
 
 3. Update `.env.local` with your credentials:
    ```env
-   GMAIL_USER=petragroupofficial@gmail.com
+   GMAIL_USER=Pet.Ra'sgroupofficial@gmail.com
    GMAIL_APP_PASSWORD=your_generated_app_password
    ```
 
@@ -106,7 +106,7 @@ The form sends POST requests to `/api/send-pet-request` with the following paylo
 
 ## Email Format
 
-Emails are sent to `petragroupofficial@gmail.com` with:
+Emails are sent to `Pet.Ra'sgroupofficial@gmail.com` with:
 - **Subject**: "New Pet Request – {Pet Type}"
 - **Body**: Nicely formatted HTML with all form fields organized in sections
 

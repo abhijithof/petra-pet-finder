@@ -263,8 +263,8 @@ const FindYourPetForm: React.FC = () => {
           <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 md:px-8 lg:px-12 py-6 border-b border-gray-200">
             <div className="flex items-center justify-center space-x-3 mb-4">
               <img 
-                src="/petra-logo-blue-2.png" 
-                alt="Petra" 
+                src="/Pet.Ra's-logo-blue-2.png" 
+                alt="Pet.Ra's" 
                 className="h-8"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
@@ -663,8 +663,8 @@ const FindYourPetForm: React.FC = () => {
                 <div className="flex items-center justify-center space-x-2">
                   <span className="text-xs text-gray-400">Powered by</span>
                   <img 
-                    src="/petra-logo-blue-2.png" 
-                    alt="Petra" 
+                    src="/Pet.Ra's-logo-blue-2.png" 
+                    alt="Pet.Ra's" 
                     className="h-4 opacity-60"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';

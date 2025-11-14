@@ -6,8 +6,8 @@ export default function PetFinder() {
   return (
     <>
       <Head>
-        <title>Pet Finder - Petra</title>
-        <meta name="description" content="Find your perfect pet with Petra's advanced pet matching service. Tell us what you're looking for and we'll find the perfect match." />
+        <title>Pet Finder - Pet.Ra's</title>
+        <meta name="description" content="Find your perfect pet with Pet.Ra's advanced pet matching service. Tell us what you're looking for and we'll find the perfect match." />
       </Head>
       
       <div className="min-h-screen">
@@ -17,8 +17,8 @@ export default function PetFinder() {
             <Link href="/">
               <div className="flex items-center space-x-3 cursor-pointer">
                 <img 
-                  src="/petra-logo-blue-2.png" 
-                  alt="Petra Logo" 
+                  src="/Pet.Ra's-logo-blue-2.png" 
+                  alt="Pet.Ra's Logo" 
                   className="h-8 sm:h-10 w-auto"
                   onError={(e) => {
                     const target = e.currentTarget;
