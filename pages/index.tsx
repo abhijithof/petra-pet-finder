@@ -1,5 +1,6 @@
 import { useState, FormEvent } from 'react';
 import Head from 'next/head';
+import { Check, Shield, Lock, PawPrint, UserCircle, EnvelopeSimple, Phone, MapPin, Dog, Cat, Calendar, CurrencyDollar, NotePencil, MagnifyingGlass, HeartStraight, ClockCounterClockwise, CheckCircle, Bell } from 'phosphor-react';
 
 export default function Home() {
   // Breed suggestions based on pet type
@@ -685,10 +686,10 @@ export default function Home() {
                           formData.petType ? 'bg-green-50/50 border-green-200' : ''
                         } cursor-pointer`}
                       >
-                        <option value="">🐾 Select pet type...</option>
-                        <option value="dog">🐕 Dog</option>
-                        <option value="cat">🐈 Cat</option>
-                        <option value="other">🦜 Other Pets</option>
+                        <option value="">Select pet type...</option>
+                        <option value="dog">Dog</option>
+                        <option value="cat">Cat</option>
+                        <option value="other">Other Pets</option>
                       </select>
                       {formErrors.petType && (
                         <p className="mt-2 text-sm text-red-600 flex items-center">
@@ -769,10 +770,10 @@ export default function Home() {
                           } cursor-pointer`}
                         >
                           <option value="">Select age range...</option>
-                          <option value="0-6months">🐣 0-6 months (Puppy/Kitten)</option>
-                          <option value="6months-2years">🐕 6 months - 2 years (Young)</option>
-                          <option value="2-7years">🦁 2-7 years (Adult)</option>
-                          <option value="7+years">👴 7+ years (Senior)</option>
+                          <option value="0-6months">0-6 months (Puppy/Kitten)</option>
+                          <option value="6months-2years">6 months - 2 years (Young)</option>
+                          <option value="2-7years">2-7 years (Adult)</option>
+                          <option value="7+years">7+ years (Senior)</option>
                         </select>
                         {formErrors.ageRange && (
                           <p className="mt-2 text-sm text-red-600 flex items-center">
@@ -963,8 +964,8 @@ export default function Home() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               
               <div className="text-center p-8 bg-gray-50 rounded-2xl hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 mx-auto mb-6 bg-[#FFD447] rounded-2xl flex items-center justify-center text-3xl">
-                  ✓
+                <div className="w-16 h-16 mx-auto mb-6 bg-[#FFD447] rounded-2xl flex items-center justify-center">
+                  <CheckCircle size={40} weight="bold" className="text-[#171739]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#171739] mb-3">Verified Breeders</h3>
                 <p className="text-gray-600">
@@ -973,8 +974,8 @@ export default function Home() {
               </div>
 
               <div className="text-center p-8 bg-gray-50 rounded-2xl hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 mx-auto mb-6 bg-[#171739] rounded-2xl flex items-center justify-center text-3xl">
-                  🏥
+                <div className="w-16 h-16 mx-auto mb-6 bg-[#171739] rounded-2xl flex items-center justify-center">
+                  <HeartStraight size={40} weight="fill" className="text-[#FFD447]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#171739] mb-3">Health Guarantee</h3>
                 <p className="text-gray-600">
@@ -983,8 +984,8 @@ export default function Home() {
               </div>
 
               <div className="text-center p-8 bg-gray-50 rounded-2xl hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 mx-auto mb-6 bg-[#FFD447] rounded-2xl flex items-center justify-center text-3xl">
-                  ⏱️
+                <div className="w-16 h-16 mx-auto mb-6 bg-[#FFD447] rounded-2xl flex items-center justify-center">
+                  <ClockCounterClockwise size={40} weight="bold" className="text-[#171739]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#171739] mb-3">24-hr Match Guarantee</h3>
                 <p className="text-gray-600">
@@ -993,8 +994,8 @@ export default function Home() {
               </div>
 
               <div className="text-center p-8 bg-gray-50 rounded-2xl hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 mx-auto mb-6 bg-[#171739] rounded-2xl flex items-center justify-center text-3xl">
-                  🔒
+                <div className="w-16 h-16 mx-auto mb-6 bg-[#171739] rounded-2xl flex items-center justify-center">
+                  <Lock size={40} weight="fill" className="text-[#FFD447]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#171739] mb-3">Secure Payments</h3>
                 <p className="text-gray-600">
@@ -1022,23 +1023,25 @@ export default function Home() {
               <div className="inline-flex items-center bg-white/60 backdrop-blur-sm rounded-full p-1.5 shadow-lg">
                 <button
                   onClick={() => setPlansPetType('dog')}
-                  className={`px-8 py-3 rounded-full font-bold transition-all duration-300 ${
+                  className={`px-8 py-3 rounded-full font-bold transition-all duration-300 flex items-center gap-2 ${
                     plansPetType === 'dog'
                       ? 'bg-[#171739] text-white shadow-lg'
                       : 'text-[#171739] hover:bg-white/50'
                   }`}
                 >
-                  🐕 Dogs
+                  <Dog size={24} weight="fill" />
+                  <span>Dogs</span>
                 </button>
                 <button
                   onClick={() => setPlansPetType('cat')}
-                  className={`px-8 py-3 rounded-full font-bold transition-all duration-300 ${
+                  className={`px-8 py-3 rounded-full font-bold transition-all duration-300 flex items-center gap-2 ${
                     plansPetType === 'cat'
                       ? 'bg-[#171739] text-white shadow-lg'
                       : 'text-[#171739] hover:bg-white/50'
                   }`}
                 >
-                  🐈 Cats
+                  <Cat size={24} weight="fill" />
+                  <span>Cats</span>
                 </button>
               </div>
             </div>
@@ -1054,9 +1057,9 @@ export default function Home() {
                     Affordable starter pack offering all core pet care needs for dogs. Designed to ensure a healthy and happy routine with monthly essentials.
                   </p>
                   <div className="space-y-3 mb-6 text-sm text-[#171739]">
-                    <p>✓ Pure Paws Essentials Grooming Pack (nail & ear care included)</p>
-                    <p>✓ 5% Discount at all partner stores</p>
-                    <p>✓ 30 Minute walks each by trusted agents</p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Pure Paws Essentials Grooming Pack (nail & ear care included)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>5% Discount at all partner stores</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>30 Minute walks each by trusted agents</span></p>
                   </div>
                   <div className="mb-6">
                     <div className="text-2xl font-bold text-[#171739]">
@@ -1082,12 +1085,12 @@ export default function Home() {
                     Value-packed solution with more activity and care, fitting a regular, active lifestyle. Great for families seeking best value on grooming, telehealth, and clinic visits.
                   </p>
                   <div className="space-y-3 mb-6 text-sm text-white">
-                    <p>✓ 8 walks/month of 30 minute each</p>
-                    <p>✓ Gloss & Glow Grooming Pack</p>
-                    <p>✓ 10% Discount at all partner stores</p>
-                    <p>✓ Classic Delight hamper box (₹600+)</p>
-                    <p>✓ Televet consultation (2x)</p>
-                    <p>✓ Clinic visit (1x)</p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>8 walks/month of 30 minute each</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>Gloss & Glow Grooming Pack</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>10% Discount at all partner stores</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>Classic Delight hamper box (₹600+)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>Televet consultation (2x)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>Clinic visit (1x)</span></p>
                   </div>
                   <div className="mb-6">
                     <div className="text-2xl font-bold text-[#FFD447]">
@@ -1113,13 +1116,13 @@ export default function Home() {
                     Premium pet care tier for the most pampered pups. Enjoy maximum service, convenience pickups, and personalized deluxe gifts monthly.
                   </p>
                   <div className="space-y-3 mb-6 text-sm text-[#171739]">
-                    <p>✓ 12 walks/month of 30 minute each</p>
-                    <p>✓ Radiance Royale Grooming Pack</p>
-                    <p>✓ 12% Discount at all partner stores</p>
-                    <p>✓ Deluxe Delight hamper box (₹1000+)</p>
-                    <p>✓ Televet consultation (1x)</p>
-                    <p>✓ Clinic visit (1x)</p>
-                    <p>✓ Pickup Service (1x)</p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>12 walks/month of 30 minute each</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Radiance Royale Grooming Pack</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>12% Discount at all partner stores</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Deluxe Delight hamper box (₹1000+)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Televet consultation (1x)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Clinic visit (1x)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Pickup Service (1x)</span></p>
                   </div>
                   <div className="mb-6">
                     <div className="text-2xl font-bold text-[#171739]">
@@ -1152,12 +1155,12 @@ export default function Home() {
                     Reliable care starter for cats, offering grooming, regular medical attention, and fun custom treats.
                   </p>
                   <div className="space-y-3 mb-6 text-sm text-[#171739]">
-                    <p>✓ Beginner-Friendly Pack</p>
-                    <p>✓ Gloss & Glow Grooming Pack (bath, nail & ear care)</p>
-                    <p>✓ 10% Discount at all partner stores</p>
-                    <p>✓ Classic Delight hamper box (₹600+)</p>
-                    <p>✓ Televet consultation (1x)</p>
-                    <p>✓ Clinic visit (1x)</p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Beginner-Friendly Pack</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Gloss & Glow Grooming Pack (bath, nail & ear care)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>10% Discount at all partner stores</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Classic Delight hamper box (₹600+)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Televet consultation (1x)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-green-600 mt-0.5 flex-shrink-0" /> <span>Clinic visit (1x)</span></p>
                   </div>
                   <div className="mb-6">
                     <div className="text-3xl font-bold text-[#171739]">₹2,699</div>
@@ -1181,13 +1184,13 @@ export default function Home() {
                     Premium feline package for the discerning cat parent—maximum grooming, deluxe play, and robust telehealth access.
                   </p>
                   <div className="space-y-3 mb-6 text-sm text-white">
-                    <p>✓ Advanced care for higher-end cats</p>
-                    <p>✓ Radiance Royale Grooming Pack (bath, nail & ear care)</p>
-                    <p>✓ 12% Discount at all partner stores</p>
-                    <p>✓ Deluxe Delight hamper box (₹1000+)</p>
-                    <p>✓ Televet consultation (1x)</p>
-                    <p>✓ Clinic visit (1x)</p>
-                    <p>✓ Pickup Service (1x)</p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>Advanced care for higher-end cats</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>Radiance Royale Grooming Pack (bath, nail & ear care)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>12% Discount at all partner stores</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>Deluxe Delight hamper box (₹1000+)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>Televet consultation (1x)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>Clinic visit (1x)</span></p>
+                    <p className="flex items-start gap-2"><Check size={18} weight="bold" className="text-[#FFD447] mt-0.5 flex-shrink-0" /> <span>Pickup Service (1x)</span></p>
                   </div>
                   <div className="mb-6">
                     <div className="text-3xl font-bold text-[#FFD447]">₹4,699</div>
