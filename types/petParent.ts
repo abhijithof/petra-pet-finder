@@ -9,7 +9,7 @@ export interface PetLearningProfile {
   id?: string;
   situation: 'thinking' | 'getting-week' | 'new-parent' | 'experienced-new-breed';
   experienceLevel: 'first-time' | 'family-pet' | 'experienced';
-  concern: 'basic-care' | 'health' | 'behavior' | 'emergency';
+  concern: string; // Can be single value or comma-separated for multiple concerns
   breed?: string;
   ageInWeeks?: number;
   createdAt?: Date;
