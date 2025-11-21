@@ -1,14 +1,23 @@
-# Pet.Ra's Pet Finder Form
+# Pet.Ra - Pet Finder & Pet Parent Guide
 
-A fully responsive React + Tailwind form component for Pet.Ra's website that allows users to request a pet and sends submissions via email.
+A comprehensive Next.js application for Pet.Ra's website featuring pet finder services and an intelligent Pet Parent Learning Hub.
 
 ## Features
 
+### Pet Finder
 - 🎨 **Fully Responsive Design**: Works perfectly on desktop and mobile
-- 📧 **Email Integration**: Sends form submissions to Pet.Ra'sgroupofficial@gmail.com
+- 📧 **Email Integration**: Sends form submissions to Petragroupofficial@gmail.com
 - ⚡ **Real-time Validation**: Client-side form validation
 - 🎯 **User-friendly UI**: Clean, modern design with Tailwind CSS
 - 📱 **Mobile-first**: Optimized for all screen sizes
+
+### Pet Parent Learning Hub ✨ NEW
+- 🧠 **Smart Discovery Quiz**: 3-question intelligent questionnaire
+- 🔍 **Direct Breed Entry**: Enter breed and age for instant guidance
+- 📚 **Personalized Content**: AI-powered learning paths
+- 💾 **Bookmark & Share**: Save favorite tips and share with others
+- 📄 **Premium PDF Export**: Comprehensive 20-30 page guides (₹99)
+- ✅ **Vet-Reviewed**: Expert-verified content for new pet parents
 
 ## Form Fields
 
@@ -60,14 +69,22 @@ Open [http://localhost:3000](http://localhost:3000) to view the form.
 
 ```
 ├── components/
-│   └── FindYourPetForm.tsx    # Main form component
+│   ├── FindYourPetForm.tsx        # Main pet finder form
+│   ├── QuizQuestionCard.tsx       # Quiz question component
+│   └── ContentCard.tsx            # Learning content card
 ├── pages/
 │   ├── api/
-│   │   └── send-pet-request.ts # API route for email sending
-│   ├── _app.tsx               # App wrapper with global styles
-│   └── index.tsx              # Home page with the form
+│   │   ├── send-pet-request.ts    # Pet finder email API
+│   │   ├── generate-pet-guide.ts  # Content generation API
+│   │   └── generate-pdf.ts        # PDF generation with paywall
+│   ├── pet-parent-guide/
+│   │   └── index.tsx              # Pet Parent Learning Hub
+│   ├── _app.tsx                   # App wrapper with global styles
+│   └── index.tsx                  # Home page
+├── types/
+│   └── petParent.ts               # TypeScript types for pet parent feature
 ├── styles/
-│   └── globals.css            # Global Tailwind CSS
+│   └── globals.css                # Global Tailwind CSS
 └── package.json
 ```
 
@@ -130,6 +147,38 @@ The form uses Tailwind CSS with the following design system:
 - Success/error state management
 - User-friendly error messages
 
+## Pages
+
+### `/` - Home Page
+- Hero section with pet finder CTA
+- Pet Parent Guide promotion
+- How it works section
+- Subscription plans
+- Pet finder form
+
+### `/pet-parent-guide` - Learning Hub
+- Two entry flows: Quiz or Direct Entry
+- Personalized content generation
+- Bookmark and share functionality
+- Premium PDF export feature
+
+### `/pet-parent-guide?flow=quiz` - Quiz Flow
+Direct link to start the 3-question quiz
+
+### `/pet-parent-guide?flow=direct` - Direct Entry Flow
+Direct link to breed and age entry
+
+## API Routes
+
+### `POST /api/send-pet-request`
+Handles pet finder form submissions and sends email
+
+### `POST /api/generate-pet-guide`
+Generates personalized learning content based on profile
+
+### `POST /api/generate-pdf`
+Generates and delivers PDF guide (requires payment/subscription)
+
 ## Dependencies
 
 - **Next.js 14**: React framework
@@ -137,3 +186,10 @@ The form uses Tailwind CSS with the following design system:
 - **Tailwind CSS**: Styling
 - **Nodemailer**: Email sending
 - **TypeScript**: Type safety
+- **Phosphor React**: Icon library
+- **Vercel Analytics**: Analytics tracking
+
+## Documentation
+
+For detailed information about the Pet Parent Learning Hub feature, see:
+- [Pet Parent Guide Documentation](./PET_PARENT_GUIDE_README.md)

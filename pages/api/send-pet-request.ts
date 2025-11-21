@@ -131,18 +131,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           breed: formData.breedSizePreference || '',
           ageRange: formData.agePreference || '',
           budget: `₹${formData.budgetRange?.toLocaleString('en-IN') || 0}`,
-          temperament: '', // Not captured in current form structure
+          temperament: [], // Empty array so Google Sheets .join() doesn't break
           notes: formData.additionalNotes || ''
         };
 
-        await fetch(process.env.GOOGLE_SHEET_PET_FINDER_URL, {
+        const response = await fetch(process.env.GOOGLE_SHEET_PET_FINDER_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(sheetData)
         });
-        console.log('Data sent to Google Sheets successfully');
+        
+        const responseText = await response.text();
+        console.log('Data sent to Google Sheets. Response:', responseText);
+        
+        if (!response.ok) {
+          console.error('Google Sheets returned error:', response.status, responseText);
+        }
       } catch (sheetError) {
         console.error('Failed to send to Google Sheets:', sheetError);
         // Don't fail the request if Google Sheets fails

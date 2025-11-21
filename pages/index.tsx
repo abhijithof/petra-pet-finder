@@ -430,6 +430,147 @@ export default function Home() {
 
         </section>
 
+        {/* PET PARENT GUIDE SECTION */}
+        <section className="py-20 lg:py-28 bg-gradient-to-br from-[#30358B]/5 to-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center space-x-2 px-4 py-2 bg-amber-100 rounded-full mb-4">
+                <span className="text-amber-600 font-semibold text-sm">✨ NEW FEATURE</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-[#171739] mb-4">
+                New to Pet Parenting?
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Get your personalized guide in 30 seconds
+              </p>
+            </div>
+
+            {/* Feature Cards */}
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+              
+              {/* Card 1: Take Quiz */}
+              <div className="bg-white rounded-3xl p-8 shadow-lg border-2 border-gray-100 hover:border-[#30358B] hover:shadow-2xl transition-all duration-300 group">
+                <div className="flex items-start space-x-6">
+                  <div className="flex-shrink-0">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#30358B] to-[#FFD447] rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-[#171739] mb-3">Take Quick Quiz</h3>
+                    <p className="text-gray-600 mb-4 leading-relaxed">
+                      Answer 3 questions for custom guidance tailored to your situation and experience level
+                    </p>
+                    <ul className="space-y-2 mb-6">
+                      <li className="flex items-center text-sm text-gray-600">
+                        <svg className="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Personalized learning path
+                      </li>
+                      <li className="flex items-center text-sm text-gray-600">
+                        <svg className="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Based on your experience
+                      </li>
+                      <li className="flex items-center text-sm text-gray-600">
+                        <svg className="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Takes only 30 seconds
+                      </li>
+                    </ul>
+                    <a 
+                      href="/pet-parent-guide?flow=quiz"
+                      className="inline-flex items-center space-x-2 px-6 py-3 bg-[#30358B] text-white font-semibold rounded-xl hover:bg-[#252756] transition-all transform hover:scale-105"
+                    >
+                      <span>Start Quiz</span>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 2: Enter Details */}
+              <div className="bg-white rounded-3xl p-8 shadow-lg border-2 border-gray-100 hover:border-[#30358B] hover:shadow-2xl transition-all duration-300 group">
+                <div className="flex items-start space-x-6">
+                  <div className="flex-shrink-0">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#30358B] to-[#FFD447] rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-[#171739] mb-3">Enter Pet Details</h3>
+                    <p className="text-gray-600 mb-4 leading-relaxed">
+                      Get breed-specific parent guide by entering your pet's breed and age directly
+                    </p>
+                    <ul className="space-y-2 mb-6">
+                      <li className="flex items-center text-sm text-gray-600">
+                        <svg className="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Breed-specific insights
+                      </li>
+                      <li className="flex items-center text-sm text-gray-600">
+                        <svg className="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Age-appropriate tips
+                      </li>
+                      <li className="flex items-center text-sm text-gray-600">
+                        <svg className="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Instant results
+                      </li>
+                    </ul>
+                    <a 
+                      href="/pet-parent-guide?flow=direct"
+                      className="inline-flex items-center space-x-2 px-6 py-3 bg-[#30358B] text-white font-semibold rounded-xl hover:bg-[#252756] transition-all transform hover:scale-105"
+                    >
+                      <span>I Know My Breed</span>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Trust Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-8">
+              <div className="flex items-center space-x-3 px-6 py-3 bg-white rounded-full shadow-md">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <span className="font-semibold text-gray-700">Vet-Reviewed Content</span>
+              </div>
+              <div className="flex items-center space-x-3 px-6 py-3 bg-white rounded-full shadow-md">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <span className="font-semibold text-gray-700">Export as PDF</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
         {/* HOW IT WORKS */}
         <section className="py-20 lg:py-28 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
