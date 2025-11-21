@@ -4,7 +4,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const results = {
+  const results: Record<string, any> = {
     petFinderUrl: process.env.GOOGLE_SHEET_PET_FINDER_URL ? 'Configured ✅' : 'Missing ❌',
     waitlistUrl: process.env.GOOGLE_SHEET_WAITLIST_URL ? 'Configured ✅' : 'Missing ❌',
     petFinderUrlValue: process.env.GOOGLE_SHEET_PET_FINDER_URL || 'Not set',
