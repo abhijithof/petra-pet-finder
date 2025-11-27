@@ -17,7 +17,7 @@ import {
 } from 'phosphor-react';
 import { PetLearningProfile, DirectEntryProfile, LearningContent, ContentSection } from '../../types/petParent';
 
-type FlowType = 'selection' | 'quiz' | 'breed-selection' | 'direct' | 'content';
+type FlowType = 'selection' | 'quiz' | 'assessment' | 'breed-selection' | 'direct' | 'content';
 
 interface BreedRecommendation {
   breed: string;
@@ -576,7 +576,7 @@ const PetParentGuide: React.FC = () => {
               </p>
 
               <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                {/* Quiz Flow Card */}
+                {/* Quick Quiz Card */}
                 <div
                   onClick={() => setCurrentFlow('quiz')}
                   className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#30358B] hover:shadow-xl transition-all duration-300 cursor-pointer group"
@@ -584,35 +584,57 @@ const PetParentGuide: React.FC = () => {
                   <div className="w-16 h-16 bg-gradient-to-br from-[#30358B] to-[#FFD447] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                     <Lightbulb size={32} weight="fill" className="text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-3">Take Quick Quiz</h2>
+                  <div className="mb-2">
+                    <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full mb-3">
+                      ⚡ 30 SECONDS
+                    </span>
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-3">Quick Quiz</h2>
                   <p className="text-gray-600 mb-6">
-                    Answer 3 simple questions and get a personalized learning path tailored to
-                    your situation
+                    Just 3 questions to get instant breed recommendations and basic guidance
                   </p>
                   <div className="flex items-center justify-center space-x-2 text-[#30358B] font-semibold">
-                    <span>Get Started</span>
+                    <span>Fast Track</span>
                     <span>→</span>
                   </div>
                 </div>
 
-                {/* Direct Entry Flow Card */}
+                {/* Full Assessment Card */}
                 <div
-                  onClick={() => setCurrentFlow('direct')}
-                  className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#30358B] hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  onClick={() => setCurrentFlow('assessment')}
+                  className="bg-gradient-to-br from-[#30358B] to-[#252756] rounded-3xl p-8 border-2 border-[#30358B] shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group relative overflow-hidden"
                 >
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#30358B] to-[#FFD447] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <MagnifyingGlass size={32} weight="bold" className="text-white" />
+                  {/* Recommended badge */}
+                  <div className="absolute top-4 right-4">
+                    <span className="px-3 py-1 bg-[#FFD447] text-[#171739] text-xs font-bold rounded-full">
+                      ⭐ RECOMMENDED
+                    </span>
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-3">Enter Pet Details</h2>
-                  <p className="text-gray-600 mb-6">
-                    Know your breed? Enter it directly along with your pet's age to get instant
-                    breed-specific guidance
+                  
+                  <div className="w-16 h-16 bg-[#FFD447] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg className="w-8 h-8 text-[#30358B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="mb-2">
+                    <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-bold rounded-full mb-3">
+                      📊 2-3 MINUTES
+                    </span>
+                  </div>
+                  <h2 className="text-2xl font-bold text-white mb-3">Full Assessment</h2>
+                  <p className="text-gray-200 mb-6">
+                    ~15 smart questions for personalized pet recommendations, readiness score, and detailed checklist
                   </p>
-                  <div className="flex items-center justify-center space-x-2 text-[#30358B] font-semibold">
-                    <span>I Know My Breed</span>
+                  <div className="flex items-center justify-center space-x-2 text-[#FFD447] font-semibold">
+                    <span>Get My Score</span>
                     <span>→</span>
                   </div>
                 </div>
+              </div>
+
+              {/* Info Text */}
+              <div className="text-center mt-8 text-gray-600">
+                <p>Both options end with personalized breed recommendations & care guides</p>
               </div>
 
               {/* Trust Badges */}
@@ -635,6 +657,47 @@ const PetParentGuide: React.FC = () => {
                   </div>
                   <span className="font-medium text-gray-700">Export as PDF</span>
                 </div>
+              </div>
+
+              {/* Already Have Pet - Direct Entry */}
+              <div className="mt-12 text-center">
+                <p className="text-gray-600 mb-4">Already have a pet?</p>
+                <button
+                  onClick={() => setCurrentFlow('direct')}
+                  className="inline-flex items-center space-x-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all"
+                >
+                  <MagnifyingGlass size={20} />
+                  <span>Enter Breed Directly for Care Guide</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Full Assessment Flow */}
+          {currentFlow === 'assessment' && (
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-4xl font-bold text-gray-900 mb-2">Pet Readiness Assessment</h2>
+                <p className="text-lg text-gray-600">Let's find the perfect pet for your lifestyle (2-3 minutes)</p>
+              </div>
+              
+              {/* Coming soon placeholder */}
+              <div className="bg-white rounded-3xl p-12 text-center border-2 border-gray-200">
+                <div className="w-20 h-20 bg-gradient-to-br from-[#30358B] to-[#FFD447] rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Full Assessment Coming Soon! 🚀</h3>
+                <p className="text-gray-600 mb-8 max-w-xl mx-auto">
+                  We're building a comprehensive assessment to calculate your pet readiness score and match you with perfect pets. For now, try our Quick Quiz!
+                </p>
+                <button
+                  onClick={() => setCurrentFlow('quiz')}
+                  className="px-8 py-4 bg-gradient-to-r from-[#30358B] to-[#30358B] text-white font-semibold rounded-xl hover:shadow-xl transition-all"
+                >
+                  Try Quick Quiz Instead
+                </button>
               </div>
             </div>
           )}
