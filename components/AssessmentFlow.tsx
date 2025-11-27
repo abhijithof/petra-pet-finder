@@ -61,14 +61,15 @@ const AssessmentFlow: React.FC<AssessmentFlowProps> = ({ onComplete, onBack }) =
     let newAnswers = { ...answers };
     
     // Handle pet-specific answers
-    if (currentQuestion.petType) {
+    const questionWithPetType = currentQuestion as any;
+    if (questionWithPetType.petType) {
       if (!newAnswers.petSpecificAnswers) {
         newAnswers.petSpecificAnswers = {};
       }
-      if (!newAnswers.petSpecificAnswers[currentQuestion.petType]) {
-        newAnswers.petSpecificAnswers[currentQuestion.petType] = {};
+      if (!newAnswers.petSpecificAnswers[questionWithPetType.petType]) {
+        newAnswers.petSpecificAnswers[questionWithPetType.petType] = {};
       }
-      newAnswers.petSpecificAnswers[currentQuestion.petType][currentQuestion.key] = value;
+      newAnswers.petSpecificAnswers[questionWithPetType.petType][currentQuestion.key] = value;
     } else {
       newAnswers[currentQuestion.key] = value;
     }
@@ -188,8 +189,9 @@ const AssessmentFlow: React.FC<AssessmentFlowProps> = ({ onComplete, onBack }) =
 
   const isSelected = (value: string) => {
     let answer;
-    if (currentQuestion.petType) {
-      answer = answers.petSpecificAnswers?.[currentQuestion.petType]?.[currentQuestion.key];
+    const questionWithPetType = currentQuestion as any;
+    if (questionWithPetType.petType) {
+      answer = answers.petSpecificAnswers?.[questionWithPetType.petType]?.[currentQuestion.key];
     } else {
       answer = answers[currentQuestion.key];
     }
@@ -202,8 +204,9 @@ const AssessmentFlow: React.FC<AssessmentFlowProps> = ({ onComplete, onBack }) =
 
   const canProceed = () => {
     let answer;
-    if (currentQuestion.petType) {
-      answer = answers.petSpecificAnswers?.[currentQuestion.petType]?.[currentQuestion.key];
+    const questionWithPetType = currentQuestion as any;
+    if (questionWithPetType.petType) {
+      answer = answers.petSpecificAnswers?.[questionWithPetType.petType]?.[currentQuestion.key];
     } else {
       answer = answers[currentQuestion.key];
     }
