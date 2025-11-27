@@ -51,7 +51,18 @@ export interface StreamlinedReadinessProfile {
 }
 
 export const QUICK_ASSESSMENT_QUESTIONS = [
-  // Section 1: Your Home (3 questions)
+  // Section 1: Your Home (4 questions)
+  {
+    section: 'home',
+    key: 'city',
+    question: 'Which city are you in?',
+    subtitle: 'To check if Petra services are available',
+    type: 'single-select',
+    options: [
+      { value: 'kochi', label: 'Kochi', icon: '📍' },
+      { value: 'other', label: 'Other City', icon: '🌍' },
+    ],
+  },
   {
     section: 'home',
     key: 'homeType',

@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import QuizQuestionCard from '../../components/QuizQuestionCard';
 import ContentCard from '../../components/ContentCard';
+import AssessmentFlow from '../../components/AssessmentFlow';
+import AssessmentResults from '../../components/AssessmentResults';
 import { 
   MagnifyingGlass, 
   Lightbulb, 
@@ -60,6 +62,9 @@ const PetParentGuide: React.FC = () => {
   // Content state
   const [generatedContent, setGeneratedContent] = useState<ContentSection[]>([]);
   const [bookmarkedCards, setBookmarkedCards] = useState<Set<string>>(new Set());
+
+  // Assessment state
+  const [assessmentResults, setAssessmentResults] = useState<any>(null);
 
   // Common breed list for autocomplete (standard, legally sold breeds)
   const allBreeds = [
@@ -674,32 +679,66 @@ const PetParentGuide: React.FC = () => {
           )}
 
           {/* Full Assessment Flow */}
-          {currentFlow === 'assessment' && (
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-4xl font-bold text-gray-900 mb-2">Pet Readiness Assessment</h2>
-                <p className="text-lg text-gray-600">Let's find the perfect pet for your lifestyle (2-3 minutes)</p>
-              </div>
-              
-              {/* Coming soon placeholder */}
-              <div className="bg-white rounded-3xl p-12 text-center border-2 border-gray-200">
-                <div className="w-20 h-20 bg-gradient-to-br from-[#30358B] to-[#FFD447] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">Full Assessment Coming Soon! 🚀</h3>
-                <p className="text-gray-600 mb-8 max-w-xl mx-auto">
-                  We're building a comprehensive assessment to calculate your pet readiness score and match you with perfect pets. For now, try our Quick Quiz!
-                </p>
-                <button
-                  onClick={() => setCurrentFlow('quiz')}
-                  className="px-8 py-4 bg-gradient-to-r from-[#30358B] to-[#30358B] text-white font-semibold rounded-xl hover:shadow-xl transition-all"
-                >
-                  Try Quick Quiz Instead
-                </button>
-              </div>
-            </div>
+          {currentFlow === 'assessment' && !assessmentResults && (
+            <AssessmentFlow
+              onComplete={(results) => {
+                setAssessmentResults(results);
+              }}
+              onBack={() => setCurrentFlow('selection')}
+            />
+          )}
+
+          {/* Assessment Results */}
+          {currentFlow === 'assessment' && assessmentResults && (
+            <AssessmentResults
+              score={assessmentResults.score}
+              recommendations={assessmentResults.recommendations}
+              answers={assessmentResults.answers}
+              onStartOver={() => {
+                setCurrentFlow('selection');
+                setAssessmentResults(null);
+              }}
+              onSelectBreed={async (breed) => {
+                // Generate guide for selected breed
+                const breedDetails = assessmentResults.recommendations.find((r: any) => r.breed === breed);
+                if (breedDetails) {
+                  setIsGenerating(true);
+                  try {
+                    const estimatedWeeks = breedDetails.estimatedAge?.includes('months') 
+                      ? parseInt(breedDetails.estimatedAge) * 4 
+                      : 8;
+
+                    const combinedProfile = {
+                      situation: 'thinking',
+                      experienceLevel: assessmentResults.answers.experienceLevel || 'first-time',
+                      concern: assessmentResults.answers.lookingFor?.join(',') || 'basic-care',
+                      breed: breed,
+                      ageInWeeks: estimatedWeeks,
+                    };
+                    
+                    const response = await fetch('/api/generate-pet-guide-ai', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ profile: combinedProfile, source: 'quiz' }),
+                    });
+
+                    if (response.ok) {
+                      const data = await response.json();
+                      setGeneratedContent(data.sections);
+                      setCurrentFlow('content');
+                    } else {
+                      throw new Error('Failed to generate content');
+                    }
+                  } catch (error) {
+                    console.error('Error generating content:', error);
+                    setGeneratedContent(getSampleContent('quiz'));
+                    setCurrentFlow('content');
+                  } finally {
+                    setIsGenerating(false);
+                  }
+                }
+              }}
+            />
           )}
 
           {/* Quiz Flow */}
