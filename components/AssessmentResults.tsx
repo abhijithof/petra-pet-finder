@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle, XCircle, AlertCircle, TrendingUp, Sparkle } from 'phosphor-react';
+import { CheckCircle, XCircle, Warning, Sparkle } from 'phosphor-react';
 
 interface AssessmentResultsProps {
   score: number;
@@ -48,7 +48,7 @@ const AssessmentResults: React.FC<AssessmentResultsProps> = ({
         bgColor: 'bg-yellow-100',
         textColor: 'text-yellow-800',
         borderColor: 'border-yellow-500',
-        icon: AlertCircle,
+        icon: Warning,
         message: 'A few adjustments needed ⚠️',
         description: 'Make some changes to your setup or lifestyle before getting a pet.',
       };
