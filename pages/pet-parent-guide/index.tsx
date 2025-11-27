@@ -36,7 +36,7 @@ interface BreedRecommendation {
 
 const PetParentGuide: React.FC = () => {
   const router = useRouter();
-  const [currentFlow, setCurrentFlow] = useState<FlowType>('selection');
+  const [currentFlow, setCurrentFlow] = useState<FlowType>('quiz'); // Default to quiz
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPDFPreview, setShowPDFPreview] = useState(false);
@@ -166,13 +166,18 @@ const PetParentGuide: React.FC = () => {
     },
   ];
 
-  // Handle flow parameter from URL
+  // Handle flow parameter from URL - route directly to chosen flow
   useEffect(() => {
     const { flow } = router.query;
     if (flow === 'quiz') {
       setCurrentFlow('quiz');
+    } else if (flow === 'assessment') {
+      setCurrentFlow('assessment');
     } else if (flow === 'direct') {
       setCurrentFlow('direct');
+    } else if (!flow) {
+      // If no flow parameter, default to quiz
+      setCurrentFlow('quiz');
     }
   }, [router.query]);
 
@@ -549,18 +554,12 @@ const PetParentGuide: React.FC = () => {
               {currentFlow !== 'selection' && (
                 <button
                   onClick={() => {
-                    setCurrentFlow('selection');
-                    setCurrentQuestionIndex(0);
-                    setQuizProfile({});
-                    setDirectProfile({ breed: '', ageInWeeks: 0 });
-                    setGeneratedContent([]);
-                    setBreedRecommendations([]);
-                    setSelectedBreed('');
+                    router.push('/');
                   }}
                   className="flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all"
                 >
                   <ArrowLeft size={20} />
-                  <span className="font-medium">Start Over</span>
+                  <span className="font-medium">Back to Home</span>
                 </button>
               )}
             </div>
@@ -569,122 +568,13 @@ const PetParentGuide: React.FC = () => {
 
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Flow Selection */}
-          {currentFlow === 'selection' && (
-            <div className="text-center mb-12 animate-fadeIn">
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                Become a Confident Pet Parent in 7 Days
-              </h1>
-              <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-                Get your personalized guide based on your pet's breed, age, and your experience
-                level
-              </p>
-
-              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                {/* Quick Quiz Card */}
-                <div
-                  onClick={() => setCurrentFlow('quiz')}
-                  className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#30358B] hover:shadow-xl transition-all duration-300 cursor-pointer group"
-                >
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#30358B] to-[#FFD447] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <Lightbulb size={32} weight="fill" className="text-white" />
-                  </div>
-                  <div className="mb-2">
-                    <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full mb-3">
-                      ⚡ 30 SECONDS
-                    </span>
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-3">Quick Quiz</h2>
-                  <p className="text-gray-600 mb-6">
-                    Just 3 questions to get instant breed recommendations and basic guidance
-                  </p>
-                  <div className="flex items-center justify-center space-x-2 text-[#30358B] font-semibold">
-                    <span>Fast Track</span>
-                    <span>→</span>
-                  </div>
-                </div>
-
-                {/* Full Assessment Card */}
-                <div
-                  onClick={() => setCurrentFlow('assessment')}
-                  className="bg-gradient-to-br from-[#30358B] to-[#252756] rounded-3xl p-8 border-2 border-[#30358B] shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group relative overflow-hidden"
-                >
-                  {/* Recommended badge */}
-                  <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 bg-[#FFD447] text-[#171739] text-xs font-bold rounded-full">
-                      ⭐ RECOMMENDED
-                    </span>
-                  </div>
-                  
-                  <div className="w-16 h-16 bg-[#FFD447] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <svg className="w-8 h-8 text-[#30358B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="mb-2">
-                    <span className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-bold rounded-full mb-3">
-                      📊 2-3 MINUTES
-                    </span>
-                  </div>
-                  <h2 className="text-2xl font-bold text-white mb-3">Full Assessment</h2>
-                  <p className="text-gray-200 mb-6">
-                    ~15 smart questions for personalized pet recommendations, readiness score, and detailed checklist
-                  </p>
-                  <div className="flex items-center justify-center space-x-2 text-[#FFD447] font-semibold">
-                    <span>Get My Score</span>
-                    <span>→</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Info Text */}
-              <div className="text-center mt-8 text-gray-600">
-                <p>Both options end with personalized breed recommendations & care guides</p>
-              </div>
-
-              {/* Trust Badges */}
-              <div className="flex flex-wrap items-center justify-center gap-8 mt-16">
-                <div className="flex items-center space-x-2">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="font-medium text-gray-700">Vet-Reviewed Content</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <FilePdf size={20} weight="fill" className="text-blue-600" />
-                  </div>
-                  <span className="font-medium text-gray-700">Export as PDF</span>
-                </div>
-              </div>
-
-              {/* Already Have Pet - Direct Entry */}
-              <div className="mt-12 text-center">
-                <p className="text-gray-600 mb-4">Already have a pet?</p>
-                <button
-                  onClick={() => setCurrentFlow('direct')}
-                  className="inline-flex items-center space-x-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all"
-                >
-                  <MagnifyingGlass size={20} />
-                  <span>Enter Breed Directly for Care Guide</span>
-                </button>
-              </div>
-            </div>
-          )}
-
           {/* Full Assessment Flow */}
           {currentFlow === 'assessment' && !assessmentResults && (
             <AssessmentFlow
               onComplete={(results) => {
                 setAssessmentResults(results);
               }}
-              onBack={() => setCurrentFlow('selection')}
+              onBack={() => router.push('/')}
             />
           )}
 
@@ -695,8 +585,7 @@ const PetParentGuide: React.FC = () => {
               recommendations={assessmentResults.recommendations}
               answers={assessmentResults.answers}
               onStartOver={() => {
-                setCurrentFlow('selection');
-                setAssessmentResults(null);
+                router.push('/');
               }}
               onSelectBreed={async (breed) => {
                 // Generate guide for selected breed
@@ -878,13 +767,10 @@ const PetParentGuide: React.FC = () => {
               {/* Back button */}
               <div className="flex justify-center mt-8">
                 <button
-                  onClick={() => {
-                    setCurrentFlow('quiz');
-                    setCurrentQuestionIndex(quizQuestions.length - 1);
-                  }}
+                  onClick={() => router.push('/')}
                   className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all"
                 >
-                  ← Back to Quiz
+                  ← Back to Home
                 </button>
               </div>
             </div>
