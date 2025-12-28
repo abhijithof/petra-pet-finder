@@ -1,4 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../auth/[...nextauth]';
+import { supabaseAdmin } from '../../../lib/supabase';
 
 /**
  * PDF Generation API with Paywall
@@ -46,8 +49,24 @@ export default async function handler(
       });
     }
 
+    // Check if user has active subscription
+    const session = await getServerSession(req, res, authOptions);
+    let userHasSubscription = isSubscriptionMember;
+
+    if (session?.user?.id && !userHasSubscription) {
+      // Check subscription in database
+      const { data: subscription } = await supabaseAdmin
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .eq('status', 'active')
+        .single();
+      
+      userHasSubscription = !!subscription;
+    }
+
     // Check payment or subscription status
-    if (!isSubscriptionMember && !paymentId) {
+    if (!userHasSubscription && !paymentId) {
       return res.status(402).json({ 
         message: 'Payment required',
         error: 'PAYMENT_REQUIRED'

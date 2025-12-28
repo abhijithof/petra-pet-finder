@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import QuizQuestionCard from '../../components/QuizQuestionCard';
 import ContentCard from '../../components/ContentCard';
 import AssessmentFlow from '../../components/AssessmentFlow';
@@ -36,10 +37,12 @@ interface BreedRecommendation {
 
 const PetParentGuide: React.FC = () => {
   const router = useRouter();
+  const { data: session } = useSession();
   const [currentFlow, setCurrentFlow] = useState<FlowType>('quiz'); // Default to quiz
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPDFPreview, setShowPDFPreview] = useState(false);
+  const [hasSubscription, setHasSubscription] = useState(false);
 
   // Quiz state
   const [quizProfile, setQuizProfile] = useState<Partial<PetLearningProfile>>({});
@@ -65,6 +68,22 @@ const PetParentGuide: React.FC = () => {
 
   // Assessment state
   const [assessmentResults, setAssessmentResults] = useState<any>(null);
+
+  // Check subscription status
+  useEffect(() => {
+    const checkSubscription = async () => {
+      if (session?.user?.id) {
+        try {
+          const res = await fetch('/api/subscriptions/my-subscription');
+          const data = await res.json();
+          setHasSubscription(!!data.subscription && data.subscription.status === 'active');
+        } catch (error) {
+          console.error('Error checking subscription:', error);
+        }
+      }
+    };
+    checkSubscription();
+  }, [session]);
 
   // Common breed list for autocomplete (standard, legally sold breeds)
   const allBreeds = [
@@ -1039,15 +1058,57 @@ const PetParentGuide: React.FC = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col space-y-3">
-                <button
-                  onClick={() => {
-                    // Handle payment
-                    alert('Payment integration coming soon!');
-                  }}
-                  className="w-full px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-lg font-bold rounded-xl hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                >
-                  Purchase PDF Guide - ₹99
-                </button>
+                {hasSubscription ? (
+                  <button
+                    onClick={async () => {
+                      try {
+                        const response = await fetch('/api/generate-pdf', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            guideData: generatedContent,
+                            userEmail: session?.user?.email,
+                            isSubscriptionMember: true,
+                          }),
+                        });
+                        if (response.ok) {
+                          const data = await response.json();
+                          alert('PDF generated successfully! Check your email.');
+                          setShowPDFPreview(false);
+                        } else {
+                          throw new Error('Failed to generate PDF');
+                        }
+                      } catch (error) {
+                        console.error('Error generating PDF:', error);
+                        alert('Error generating PDF. Please try again.');
+                      }
+                    }}
+                    className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white text-lg font-bold rounded-xl hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  >
+                    Download PDF (Free - Subscription Member)
+                  </button>
+                ) : (
+                  <>
+                    <Link href="/subscriptions">
+                      <button className="w-full px-8 py-4 bg-gradient-to-r from-[#FFD447] to-[#F8D24B] text-[#171739] text-lg font-bold rounded-xl hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                        {session ? 'Subscribe to Get Free PDFs' : 'Sign In & Subscribe'}
+                      </button>
+                    </Link>
+                    <button
+                      onClick={async () => {
+                        if (!session) {
+                          router.push('/auth/signin?callbackUrl=/pet-parent-guide');
+                          return;
+                        }
+                        // Handle one-time payment
+                        alert('One-time payment coming soon! Subscribe for free PDFs.');
+                      }}
+                      className="w-full px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-lg font-bold rounded-xl hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    >
+                      Purchase PDF Guide - ₹99
+                    </button>
+                  </>
+                )}
                 <button
                   onClick={() => setShowPDFPreview(false)}
                   className="w-full px-8 py-4 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-all"
@@ -1057,7 +1118,7 @@ const PetParentGuide: React.FC = () => {
               </div>
 
               <p className="text-center text-xs text-gray-500 mt-4">
-                Free for subscription members • Secure payment via Razorpay
+                {hasSubscription ? 'Free for subscription members ✓' : 'Free for subscription members • Secure payment via Razorpay'}
               </p>
             </div>
           </div>

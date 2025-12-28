@@ -1,8 +1,12 @@
 import { useState, FormEvent } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import { Check, Shield, Lock, PawPrint, UserCircle, EnvelopeSimple, Phone, MapPin, Dog, Cat, Calendar, CurrencyDollar, NotePencil, MagnifyingGlass, HeartStraight, ClockCounterClockwise, CheckCircle, Bell } from 'phosphor-react';
 
 export default function Home() {
+  const { data: session, status } = useSession();
+  
   // Breed suggestions based on pet type
   const breedSuggestions: { [key: string]: string[] } = {
     dog: [
@@ -316,15 +320,45 @@ export default function Home() {
         <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-transparent">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-                <img src="/petra-logo-blue-2.png" alt="Pet.Ra" className="h-10 w-auto" />
-            </div>
-              <button 
-                onClick={scrollToPetFinder}
-                className="px-6 py-2.5 bg-[#FFD447] text-[#171739] font-semibold rounded-xl hover:bg-[#F8D24B] transition-all shadow-md"
-              >
-                Find Your Pet
-              </button>
+              <Link href="/">
+                <div className="flex items-center space-x-3 cursor-pointer">
+                  <img src="/petra-logo-blue-2.png" alt="Pet.Ra" className="h-10 w-auto" />
+                </div>
+              </Link>
+              <div className="flex items-center gap-3">
+                {status === 'authenticated' ? (
+                  <>
+                    <Link href="/dashboard">
+                      <button className="px-4 py-2 text-white hover:text-[#FFD447] transition-colors font-medium">
+                        Dashboard
+                      </button>
+                    </Link>
+                    <Link href="/subscriptions">
+                      <button className="px-4 py-2 text-white hover:text-[#FFD447] transition-colors font-medium">
+                        Subscriptions
+                      </button>
+                    </Link>
+                    <button 
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                      className="px-4 py-2 text-white hover:text-[#FFD447] transition-colors font-medium"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <Link href="/auth/signin">
+                    <button className="px-4 py-2 text-white hover:text-[#FFD447] transition-colors font-medium">
+                      Sign In
+                    </button>
+                  </Link>
+                )}
+                <button 
+                  onClick={scrollToPetFinder}
+                  className="px-6 py-2.5 bg-[#FFD447] text-[#171739] font-semibold rounded-xl hover:bg-[#F8D24B] transition-all shadow-md"
+                >
+                  Find Your Pet
+                </button>
+              </div>
             </div>
           </div>
         </nav>
@@ -1260,12 +1294,11 @@ export default function Home() {
                     </div>
                     <div className="text-sm text-gray-500">(Small/Medium/Big Dogs)</div>
                   </div>
-                  <button
-                    onClick={() => openWaitlistModal('Wag Essentials')}
-                    className="w-full py-3 bg-[#171739] text-white font-bold rounded-xl hover:bg-[#252756] transition-all"
-                  >
-                    Join Waitlist
-                  </button>
+                  <Link href="/subscriptions">
+                    <button className="w-full py-3 bg-[#171739] text-white font-bold rounded-xl hover:bg-[#252756] transition-all">
+                      {session ? 'Subscribe Now' : 'View Plans'}
+                    </button>
+                  </Link>
                 </div>
 
                 {/* Wag Plus - Featured */}
@@ -1291,12 +1324,11 @@ export default function Home() {
                     </div>
                     <div className="text-sm text-gray-400">(Small/Medium/Big Dogs)</div>
                   </div>
-                  <button
-                    onClick={() => openWaitlistModal('Wag Plus')}
-                    className="w-full py-3 bg-[#FFD447] text-[#171739] font-bold rounded-xl hover:bg-[#F8D24B] transition-all"
-                  >
-                    Join Waitlist
-                  </button>
+                  <Link href="/subscriptions">
+                    <button className="w-full py-3 bg-[#FFD447] text-[#171739] font-bold rounded-xl hover:bg-[#F8D24B] transition-all">
+                      {session ? 'Subscribe Now' : 'View Plans'}
+                    </button>
+                  </Link>
                   <p className="mt-4 text-xs text-gray-400 italic text-center">
                     *Customisable option to change walks and redeem extra service
                   </p>
@@ -1323,12 +1355,11 @@ export default function Home() {
                     </div>
                     <div className="text-sm text-gray-500">(Small/Medium/Big Dogs)</div>
                   </div>
-                  <button
-                    onClick={() => openWaitlistModal('Wag Elite')}
-                    className="w-full py-3 bg-[#171739] text-white font-bold rounded-xl hover:bg-[#252756] transition-all"
-                  >
-                    Join Waitlist
-                  </button>
+                  <Link href="/subscriptions">
+                    <button className="w-full py-3 bg-[#171739] text-white font-bold rounded-xl hover:bg-[#252756] transition-all">
+                      {session ? 'Subscribe Now' : 'View Plans'}
+                    </button>
+                  </Link>
                   <p className="mt-4 text-xs text-gray-500 italic text-center">
                     *Customisable option to change walks and redeem extra service
                   </p>
@@ -1359,12 +1390,11 @@ export default function Home() {
                     <div className="text-3xl font-bold text-[#171739]">₹2,699</div>
                     <div className="text-sm text-gray-500">(for all cats)</div>
                   </div>
-                  <button
-                    onClick={() => openWaitlistModal('Purr Basic')}
-                    className="w-full py-3 bg-[#171739] text-white font-bold rounded-xl hover:bg-[#252756] transition-all"
-                  >
-                    Join Waitlist
-                  </button>
+                  <Link href="/subscriptions">
+                    <button className="w-full py-3 bg-[#171739] text-white font-bold rounded-xl hover:bg-[#252756] transition-all">
+                      {session ? 'Subscribe Now' : 'View Plans'}
+                    </button>
+                  </Link>
                 </div>
 
                 {/* Purr Advanced - Featured */}
@@ -1389,12 +1419,11 @@ export default function Home() {
                     <div className="text-3xl font-bold text-[#FFD447]">₹4,699</div>
                     <div className="text-sm text-gray-400">(for all cats)</div>
                   </div>
-                  <button
-                    onClick={() => openWaitlistModal('Purr Advanced')}
-                    className="w-full py-3 bg-[#FFD447] text-[#171739] font-bold rounded-xl hover:bg-[#F8D24B] transition-all"
-                  >
-                    Join Waitlist
-                  </button>
+                  <Link href="/subscriptions">
+                    <button className="w-full py-3 bg-[#FFD447] text-[#171739] font-bold rounded-xl hover:bg-[#F8D24B] transition-all">
+                      {session ? 'Subscribe Now' : 'View Plans'}
+                    </button>
+                  </Link>
                 </div>
 
               </div>
