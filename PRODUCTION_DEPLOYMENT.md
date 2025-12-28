@@ -36,7 +36,7 @@ Update your production `.env.local` or hosting platform environment variables:
 
 ```env
 # Supabase (Production)
-NEXT_PUBLIC_SUPABASE_URL=https://fomnqjhtpftwzdrmobsc.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_production_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_production_service_role_key
 

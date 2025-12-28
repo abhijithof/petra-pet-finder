@@ -3,7 +3,7 @@
 ## Steps:
 
 1. Go to your Supabase project dashboard: https://supabase.com/dashboard
-2. Select your project (the one with URL: `fomnqjhtpftwzdrmobsc.supabase.co`)
+2. Select your project (the one you're using for your mobile app)
 3. Go to **Settings** (gear icon in left sidebar)
 4. Click on **API** in the settings menu
 5. Scroll down to find **Project API keys**
@@ -35,7 +35,7 @@ This key is needed for:
 
 After adding the key, your `.env.local` should have:
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://fomnqjhtpftwzdrmobsc.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... (your anon key)
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... (your service role key - different!)
 ```
