@@ -114,6 +114,19 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
+    async redirect({ url, baseUrl }) {
+      // Handle callback URL from query parameter
+      if (url.startsWith('/')) {
+        // Relative URL - prepend baseUrl
+        return `${baseUrl}${url}`;
+      }
+      // Absolute URL - check if it's from the same origin
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
+      // Default redirect to subscriptions
+      return `${baseUrl}/subscriptions`;
+    },
   },
   pages: {
     signIn: '/auth/signin',

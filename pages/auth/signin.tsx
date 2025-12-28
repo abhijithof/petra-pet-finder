@@ -5,27 +5,36 @@ import { useEffect } from 'react';
 export default function SignIn() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { callbackUrl } = router.query;
+  const { callbackUrl, error } = router.query;
 
   // Redirect if already signed in
   useEffect(() => {
     if (status === 'authenticated' && session) {
-      router.push((callbackUrl as string) || '/subscriptions');
+      const url = (callbackUrl as string) || '/subscriptions';
+      // Decode the callback URL if it's encoded
+      const decodedUrl = url.startsWith('http') ? new URL(url).pathname + new URL(url).search : url;
+      router.push(decodedUrl);
     }
   }, [status, session, router, callbackUrl]);
 
+  // Show error message if there's an error
+  useEffect(() => {
+    if (error) {
+      console.error('Sign in error:', error);
+    }
+  }, [error]);
+
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signIn('google', {
-        callbackUrl: (callbackUrl as string) || '/subscriptions',
+      // Get the callback URL from query or default to subscriptions
+      const url = (callbackUrl as string) || '/subscriptions';
+      // Decode if it's a full URL
+      const decodedUrl = url.startsWith('http') ? new URL(url).pathname + new URL(url).search : url;
+      
+      await signIn('google', {
+        callbackUrl: decodedUrl,
         redirect: true,
       });
-      
-      // If signIn returns an error, handle it
-      if (result?.error) {
-        console.error('Sign in error:', result.error);
-        alert('Sign in failed. Please try again.');
-      }
     } catch (error) {
       console.error('Error during sign in:', error);
       alert('An error occurred during sign in. Please try again.');
@@ -38,6 +47,15 @@ export default function SignIn() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-[#171739] mb-2">Welcome to Pet.Ra</h1>
           <p className="text-gray-600">Sign in to access subscription plans</p>
+          {error && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-600">
+                {error === 'Callback' 
+                  ? 'Authentication failed. Please try again.' 
+                  : 'An error occurred. Please try again.'}
+              </p>
+            </div>
+          )}
         </div>
 
         <button
