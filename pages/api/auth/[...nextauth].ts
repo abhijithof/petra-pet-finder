@@ -28,23 +28,24 @@ if (!googleClientId || !googleClientSecret) {
   console.warn('Missing Google OAuth environment variables - authentication will fail');
 }
 
-// Only use adapter if we have valid Supabase config
-// If adapter fails, NextAuth will fall back to JWT strategy
-let adapter;
-try {
-  if (hasValidSupabaseConfig) {
-    // The Supabase adapter automatically creates NextAuth tables
-    // It uses the 'public' schema by default
-    adapter = SupabaseAdapter({
-      url: supabaseUrl!,
-      secret: supabaseSecret!,
-    });
-  }
-} catch (error) {
-  console.error('Failed to initialize Supabase adapter:', error);
-  console.warn('Falling back to JWT strategy');
-  adapter = undefined;
-}
+// Temporarily disable Supabase adapter due to schema issues
+// Using JWT strategy instead - sessions stored in cookies
+// TODO: Fix Supabase adapter schema issue and re-enable database strategy
+let adapter = undefined;
+
+// Uncomment below to try Supabase adapter again after fixing schema issues:
+// try {
+//   if (hasValidSupabaseConfig) {
+//     adapter = SupabaseAdapter({
+//       url: supabaseUrl!,
+//       secret: supabaseSecret!,
+//     });
+//   }
+// } catch (error) {
+//   console.error('Failed to initialize Supabase adapter:', error);
+//   console.warn('Falling back to JWT strategy');
+//   adapter = undefined;
+// }
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -159,8 +160,8 @@ export const authOptions: NextAuthOptions = {
     error: '/auth/error',
   },
   session: {
-    // Use database strategy only if adapter is properly initialized
-    strategy: adapter ? 'database' : 'jwt',
+    // Using JWT strategy (sessions in cookies) until Supabase adapter is fixed
+    strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   debug: process.env.NODE_ENV === 'development',
