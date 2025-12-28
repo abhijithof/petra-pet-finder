@@ -16,7 +16,7 @@ The redirect URI `https://www.thepetra.in/api/auth/callback/google` is not regis
 
 ### Step 2: Edit Your OAuth 2.0 Client
 
-1. Find your OAuth 2.0 Client ID (the one you created earlier)
+1. Find your OAuth 2.0 Client ID (the one with Client ID: `388769718271-6vcmterf7796qsugik6uvnq14a9g3bi8`)
 2. Click on it to edit
 
 ### Step 3: Add Authorized Redirect URIs

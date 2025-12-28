@@ -14,7 +14,7 @@ Your app is trying to use: `https://www.thepetra.in/api/auth/callback/google`
 
 ### Step 2: Find Your OAuth Client
 1. Look for **OAuth 2.0 Client IDs** section
-2. Find your OAuth 2.0 Client ID (the one you created)
+2. Find the client with ID: `388769718271-6vcmterf7796qsugik6uvnq14a9g3bi8`
 3. Click on the **pencil icon** (Edit) or click the client name
 
 ### Step 3: Add Redirect URIs (EXACT COPY-PASTE)
