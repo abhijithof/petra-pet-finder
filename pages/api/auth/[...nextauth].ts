@@ -24,6 +24,7 @@ export const authOptions: NextAuthOptions = {
           .eq('id', user.id)
           .single();
 
+        // Type assertion is safe here because we've extended the types
         session.user.id = user.id;
         if (profile) {
           // Fetch active subscription
@@ -34,7 +35,7 @@ export const authOptions: NextAuthOptions = {
             .eq('status', 'active')
             .single();
 
-          (session.user as any).subscription = subscription || null;
+          session.user.subscription = subscription || null;
         }
       }
       return session;
