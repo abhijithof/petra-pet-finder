@@ -17,20 +17,32 @@ export default function SubscribePage() {
 
     const order = await res.json();
 
+    const razorpayKeyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+    
+    if (!razorpayKeyId) {
+      alert("Razorpay key is not configured. Please check your environment variables.");
+      return;
+    }
+
     const options: RazorpayOptions = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+      key: razorpayKeyId,
       amount: order.amount,
       currency: "INR",
       name: "Pet.Ra",
       description: "Wag Plus Subscription",
       order_id: order.id,
       handler: async (response) => {
-        await fetch("/api/verify-payment", {
+        const verifyRes = await fetch("/api/verify-payment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(response),
         });
-        alert("Payment successful");
+        const result = await verifyRes.json();
+        if (result.success) {
+          alert("Payment successful");
+        } else {
+          alert("Payment verification failed");
+        }
       },
       theme: { color: "#171739" },
     };
