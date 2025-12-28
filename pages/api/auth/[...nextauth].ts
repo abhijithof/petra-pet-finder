@@ -33,6 +33,8 @@ if (!googleClientId || !googleClientSecret) {
 let adapter;
 try {
   if (hasValidSupabaseConfig) {
+    // The Supabase adapter automatically creates NextAuth tables
+    // It uses the 'public' schema by default
     adapter = SupabaseAdapter({
       url: supabaseUrl!,
       secret: supabaseSecret!,
