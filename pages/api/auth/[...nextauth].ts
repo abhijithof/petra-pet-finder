@@ -9,13 +9,39 @@ const supabaseSecret = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
+// Validate Supabase credentials more thoroughly
+const hasValidSupabaseConfig = supabaseUrl && 
+  supabaseSecret && 
+  supabaseUrl.startsWith('https://') && 
+  supabaseSecret.length > 20; // Basic validation that it's not empty/placeholder
+
 // Log warnings instead of errors to prevent breaking the build
-if (!supabaseUrl || !supabaseSecret) {
-  console.warn('Missing Supabase environment variables for NextAuth - will use JWT strategy');
+if (!hasValidSupabaseConfig) {
+  console.warn('Missing or invalid Supabase environment variables for NextAuth - will use JWT strategy', {
+    hasUrl: !!supabaseUrl,
+    hasSecret: !!supabaseSecret,
+    urlValid: supabaseUrl?.startsWith('https://'),
+  });
 }
 
 if (!googleClientId || !googleClientSecret) {
   console.warn('Missing Google OAuth environment variables - authentication will fail');
+}
+
+// Only use adapter if we have valid Supabase config
+// If adapter fails, NextAuth will fall back to JWT strategy
+let adapter;
+try {
+  if (hasValidSupabaseConfig) {
+    adapter = SupabaseAdapter({
+      url: supabaseUrl!,
+      secret: supabaseSecret!,
+    });
+  }
+} catch (error) {
+  console.error('Failed to initialize Supabase adapter:', error);
+  console.warn('Falling back to JWT strategy');
+  adapter = undefined;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -25,12 +51,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: googleClientSecret || '',
     }),
   ],
-  adapter: supabaseUrl && supabaseSecret
-    ? SupabaseAdapter({
-        url: supabaseUrl,
-        secret: supabaseSecret,
-      })
-    : undefined,
+  adapter,
   callbacks: {
     async jwt({ token, user, account }) {
       // If user is signing in, add user id to token
@@ -77,9 +98,10 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ user, account, profile }) {
+      // Always allow sign-in - don't block on profile creation
       if (account?.provider === 'google' && user.email && user.id) {
-        // Only create profile if Supabase admin is available
-        if (supabaseAdmin) {
+        // Only create profile if Supabase admin is available and valid
+        if (supabaseAdmin && hasValidSupabaseConfig) {
           try {
             // Create or update user profile (safe for existing profiles table)
             const profileData: any = {
@@ -110,6 +132,8 @@ export const authOptions: NextAuthOptions = {
             console.error('Error in signIn callback:', error);
             // Don't block sign-in if profile creation fails
           }
+        } else {
+          console.warn('Skipping profile creation - Supabase admin not available or invalid config');
         }
       }
       return true;
@@ -133,7 +157,8 @@ export const authOptions: NextAuthOptions = {
     error: '/auth/error',
   },
   session: {
-    strategy: supabaseUrl && supabaseSecret ? 'database' : 'jwt',
+    // Use database strategy only if adapter is properly initialized
+    strategy: adapter ? 'database' : 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   debug: process.env.NODE_ENV === 'development',
