@@ -22,12 +22,16 @@ Your app is running on **port 3001** (as shown in terminal: "Port 3000 is in use
    http://localhost:3002/api/auth/callback/google
    ```
 
-   **For Production (when you deploy):**
+   **For Production:**
    ```
-   https://yourdomain.com/api/auth/callback/google
+   https://www.thepetra.in/api/auth/callback/google
+   https://thepetra.in/api/auth/callback/google
    ```
 
+   **Important:** Add BOTH www and non-www versions!
+
 5. Click **Save**
+6. Wait 1-2 minutes for changes to propagate
 
 ### Step 3: Update Your .env.local
 

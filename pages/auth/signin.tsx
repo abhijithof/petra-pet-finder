@@ -1,15 +1,35 @@
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 export default function SignIn() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { callbackUrl } = router.query;
 
-  const handleGoogleSignIn = () => {
-    signIn('google', {
-      callbackUrl: (callbackUrl as string) || '/subscriptions',
-    });
+  // Redirect if already signed in
+  useEffect(() => {
+    if (status === 'authenticated' && session) {
+      router.push((callbackUrl as string) || '/subscriptions');
+    }
+  }, [status, session, router, callbackUrl]);
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signIn('google', {
+        callbackUrl: (callbackUrl as string) || '/subscriptions',
+        redirect: true,
+      });
+      
+      // If signIn returns an error, handle it
+      if (result?.error) {
+        console.error('Sign in error:', result.error);
+        alert('Sign in failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during sign in:', error);
+      alert('An error occurred during sign in. Please try again.');
+    }
   };
 
   return (
