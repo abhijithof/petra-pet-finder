@@ -25,11 +25,11 @@ export default async function handler(
         GMAIL_USER: !!process.env.GMAIL_USER,
         GMAIL_APP_PASSWORD: !!process.env.GMAIL_APP_PASSWORD
       });
-      
+
       // Log the notification request and return success
       console.log('Product notification request received (no email sent):', { email, product });
-      
-      return res.status(200).json({ 
+
+      return res.status(200).json({
         success: true,
         message: 'Notification request received successfully',
         note: 'Email service not configured'
@@ -51,12 +51,12 @@ export default async function handler(
       'Accessories': { emoji: '🎾', description: 'Quality toys, collars, beds & more' },
       'Health': { emoji: '💊', description: 'Supplements, vitamins & care products' },
     };
-    
+
     const productDetails = productDetailsMap[product] || { emoji: '🛍️', description: 'Premium pet products' };
 
     // Email content
     const subject = `${productDetails.emoji} New Product Interest – ${product}`;
-    
+
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -162,14 +162,14 @@ export default async function handler(
     const customerResult = await transporter.sendMail(customerMailOptions);
     console.log('Customer confirmation email sent successfully:', customerResult.messageId);
 
-    return res.status(200).json({ 
-      success: true, 
+    return res.status(200).json({
+      success: true,
       message: `You'll be notified when ${product} products launch`,
     });
 
   } catch (error) {
     console.error('Error processing product notification:', error);
-    
+
     // More specific error messages
     if (error instanceof Error) {
       if ('code' in error && error.code === 'EAUTH') {

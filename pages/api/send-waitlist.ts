@@ -23,11 +23,11 @@ export default async function handler(
         GMAIL_USER: !!process.env.GMAIL_USER,
         GMAIL_APP_PASSWORD: !!process.env.GMAIL_APP_PASSWORD
       });
-      
+
       // Log the waitlist signup and return success
       console.log('Waitlist signup received (no email sent):', { name, email, plan });
-      
-      return res.status(200).json({ 
+
+      return res.status(200).json({
         success: true,
         message: 'Waitlist signup received successfully',
         note: 'Email service not configured'
@@ -45,7 +45,7 @@ export default async function handler(
 
     // Email content
     const subject = `🎉 New Waitlist Signup – ${plan} Plan`;
-    
+
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -172,14 +172,14 @@ export default async function handler(
       }
     }
 
-    return res.status(200).json({ 
-      success: true, 
+    return res.status(200).json({
+      success: true,
       message: 'Successfully joined the waitlist',
     });
 
   } catch (error) {
     console.error('Error processing waitlist signup:', error);
-    
+
     // More specific error messages
     if (error instanceof Error) {
       if ('code' in error && error.code === 'EAUTH') {
