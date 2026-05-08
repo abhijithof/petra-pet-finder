@@ -1,6 +1,7 @@
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import Head from 'next/head';
 
 export default function SignIn() {
   const router = useRouter();
@@ -42,6 +43,11 @@ export default function SignIn() {
   };
 
   return (
+    <>
+      <Head>
+        <title>Sign In - Pet.Ra</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="text-center mb-8">
@@ -88,6 +94,6 @@ export default function SignIn() {
         </p>
       </div>
     </div>
+    </>
   );
 }
-

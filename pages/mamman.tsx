@@ -215,6 +215,7 @@ export default function AdminPanel() {
     <>
       <Head>
         <title>Admin Panel - Pet.Ra Content Management</title>
+        <meta name="robots" content="noindex, nofollow" />
       </Head>
       <div className="min-h-screen bg-gray-50">
         {/* Header */}

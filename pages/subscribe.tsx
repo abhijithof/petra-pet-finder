@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Head from "next/head";
 
 export default function SubscribePage() {
   useEffect(() => {
@@ -52,6 +53,11 @@ export default function SubscribePage() {
   };
 
   return (
+    <>
+      <Head>
+        <title>Subscribe - Pet.Ra</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <button
         onClick={payNow}
@@ -60,5 +66,6 @@ export default function SubscribePage() {
         Subscribe Now
       </button>
     </div>
+    </>
   );
 }

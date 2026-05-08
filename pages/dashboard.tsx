@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { User, CreditCard, Calendar, X } from 'phosphor-react';
+import Head from 'next/head';
 
 interface Subscription {
   id: string;
@@ -62,6 +63,11 @@ export default function Dashboard() {
   }
 
   return (
+    <>
+      <Head>
+        <title>Dashboard - Pet.Ra</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
@@ -188,6 +194,7 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

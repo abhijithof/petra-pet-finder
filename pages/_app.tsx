@@ -8,8 +8,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider>
       <Head>
-        <title>Pet.Ra - Find Your Perfect Pet</title>
-        <meta name="description" content="Find your perfect pet with Pet.Ra's advanced pet matching service. Tell us what you're looking for and we'll find the perfect match." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Pet.Ra - Find Your Perfect Pet in Kochi</title>
+        <meta name="description" content="Pet.Ra helps you find your perfect pet in Kochi. Verified breeders, personalised matching, and pet care subscription plans." />
         <link rel="icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/petra-logo-blue-2.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/petra-logo-blue-2.png" />

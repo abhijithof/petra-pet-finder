@@ -552,11 +552,34 @@ const PetParentGuide: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Pet Parent Guide - Pet.Ra</title>
-        <meta
-          name="description"
-          content="Get your personalized pet parenting guide based on your experience level and pet's breed. Learn essential care tips, training techniques, and avoid common mistakes."
-        />
+        <title>Pet Parent Guide - Personalised Care Tips & Training | Pet.Ra</title>
+        <meta name="description" content="Get a personalised pet parenting guide based on your experience level and pet's breed. Essential care tips, training techniques, breed recommendations, and more — from Pet.Ra Kochi." />
+        <meta name="keywords" content="pet parent guide, pet care tips Kochi, dog training guide, cat care guide, breed recommendations, new pet owner guide, pet parenting India" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://thepetra.in/pet-parent-guide" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://thepetra.in/pet-parent-guide" />
+        <meta property="og:site_name" content="Pet.Ra" />
+        <meta property="og:title" content="Pet Parent Guide - Personalised Care Tips & Training | Pet.Ra" />
+        <meta property="og:description" content="Answer a few questions and get a personalised guide covering care, training, diet, and common mistakes — tailored to your pet's breed and your experience level." />
+        <meta property="og:image" content="https://thepetra.in/petra-logo-blue-2.png" />
+        <meta property="og:locale" content="en_IN" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Pet Parent Guide - Personalised Care Tips | Pet.Ra" />
+        <meta name="twitter:description" content="Get a personalised pet parenting guide for your breed from Pet.Ra." />
+        <meta name="twitter:image" content="https://thepetra.in/petra-logo-blue-2.png" />
+
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Pet Parent Guide",
+          "description": "Personalised pet parenting guides covering care, training, diet, and breed-specific tips",
+          "url": "https://thepetra.in/pet-parent-guide",
+          "isPartOf": { "@type": "WebSite", "name": "Pet.Ra", "url": "https://thepetra.in" },
+          "about": { "@type": "Thing", "name": "Pet Care" }
+        })}</script>
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">

@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /subscribe
+Disallow: /subscriptions
+Disallow: /auth/
+Disallow: /mamman
+
+Sitemap: https://thepetra.in/sitemap.xml

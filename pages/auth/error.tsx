@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
+import Head from 'next/head';
 
 export default function AuthError() {
   const router = useRouter();
@@ -21,6 +22,11 @@ export default function AuthError() {
   };
 
   return (
+    <>
+      <Head>
+        <title>Auth Error - Pet.Ra</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="text-center">
@@ -78,6 +84,7 @@ export default function AuthError() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

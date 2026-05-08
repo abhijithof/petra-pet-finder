@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { Check } from 'phosphor-react';
+import Head from 'next/head';
 
 interface Plan {
   id: string;
@@ -89,6 +90,11 @@ export default function SubscriptionsPage() {
   }
 
   return (
+    <>
+      <Head>
+        <title>Pet Subscription Plans - Wag & Purr | Pet.Ra</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
@@ -190,6 +196,7 @@ export default function SubscriptionsPage() {
         )}
       </div>
     </div>
+    </>
   );
 }
 

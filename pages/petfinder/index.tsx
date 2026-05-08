@@ -6,8 +6,36 @@ export default function PetFinder() {
   return (
     <>
       <Head>
-        <title>Pet Finder - Pet.Ra's</title>
-        <meta name="description" content="Find your perfect pet with Pet.Ra's advanced pet matching service. Tell us what you're looking for and we'll find the perfect match." />
+        <title>Find Your Perfect Pet in Kochi | Pet Finder - Pet.Ra</title>
+        <meta name="description" content="Use Pet.Ra's pet finder to locate verified dogs, cats, and more from trusted breeders in Kochi. Tell us your preferences and get matched in 24 hours." />
+        <meta name="keywords" content="pet finder Kochi, buy dog Kochi, buy cat Kochi, verified pet breeders Kerala, pet adoption Kochi, find puppy Kochi, find kitten Kochi" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://thepetra.in/petfinder" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://thepetra.in/petfinder" />
+        <meta property="og:site_name" content="Pet.Ra" />
+        <meta property="og:title" content="Find Your Perfect Pet in Kochi | Pet Finder - Pet.Ra" />
+        <meta property="og:description" content="Tell us what you're looking for and Pet.Ra will match you with verified pets from trusted breeders in Kochi within 24 hours." />
+        <meta property="og:image" content="https://thepetra.in/petra-logo-blue-2.png" />
+        <meta property="og:locale" content="en_IN" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Find Your Perfect Pet in Kochi | Pet Finder - Pet.Ra" />
+        <meta name="twitter:description" content="Get matched with verified pets from trusted breeders in Kochi within 24 hours." />
+        <meta name="twitter:image" content="https://thepetra.in/petra-logo-blue-2.png" />
+
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Pet Finder Service",
+          "description": "Find verified pets from trusted breeders in Kochi within 24 hours",
+          "url": "https://thepetra.in/petfinder",
+          "provider": { "@type": "Organization", "name": "Pet.Ra", "url": "https://thepetra.in" },
+          "areaServed": { "@type": "City", "name": "Kochi" },
+          "serviceType": "Pet Finder",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR", "description": "Free pet matching request" }
+        })}</script>
       </Head>
       
       <div className="min-h-screen">
