@@ -15,10 +15,15 @@ export default function handler(
     razorpay_signature,
   } = req.body;
 
+  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  if (!keySecret) {
+    return res.status(500).json({ success: false, error: "Payment service not configured" });
+  }
+
   const body = `${razorpay_order_id}|${razorpay_payment_id}`;
 
   const expectedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
+    .createHmac("sha256", keySecret)
     .update(body)
     .digest("hex");
 

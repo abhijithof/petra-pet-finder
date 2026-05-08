@@ -5,7 +5,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  // Check environment variables (don't expose secrets, just check if they exist)
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(404).json({ message: 'Not found' });
+  }
+
+  // Only checks presence of vars — never expose values
   const envCheck = {
     hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
     hasSupabaseAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -13,7 +17,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     hasGoogleClientId: !!process.env.GOOGLE_CLIENT_ID,
     hasGoogleClientSecret: !!process.env.GOOGLE_CLIENT_SECRET,
     hasNextAuthSecret: !!process.env.NEXTAUTH_SECRET,
-    nextAuthUrl: process.env.NEXTAUTH_URL,
+    hasNextAuthUrl: !!process.env.NEXTAUTH_URL,
     nodeEnv: process.env.NODE_ENV,
     vercel: !!process.env.VERCEL,
   };

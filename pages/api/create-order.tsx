@@ -1,11 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Razorpay from "razorpay";
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -13,6 +8,13 @@ export default async function handler(
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
+
+  const { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET } = process.env;
+  if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
+    return res.status(500).json({ error: "Payment service not configured" });
+  }
+
+  const razorpay = new Razorpay({ key_id: RAZORPAY_KEY_ID, key_secret: RAZORPAY_KEY_SECRET });
 
   try {
     const { amount } = req.body;
