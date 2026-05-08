@@ -1,8 +1,21 @@
 import { useEffect, useState } from 'react';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { User, CreditCard, Calendar, X } from 'phosphor-react';
+import { CreditCard, Calendar, ArrowRight, BookOpen } from 'phosphor-react';
 import Head from 'next/head';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: EASE },
+};
+const stagger = (i: number) => ({
+  ...fadeUp,
+  transition: { ...fadeUp.transition, delay: i * 0.07 },
+});
 
 interface Subscription {
   id: string;
@@ -28,7 +41,6 @@ export default function Dashboard() {
       router.push('/auth/signin?callbackUrl=/dashboard');
       return;
     }
-
     if (status === 'authenticated') {
       fetchSubscription();
     }
@@ -39,25 +51,20 @@ export default function Dashboard() {
       const res = await fetch('/api/subscriptions/my-subscription');
       const data = await res.json();
       setSubscription(data.subscription);
-    } catch (error) {
-      console.error('Error fetching subscription:', error);
+    } catch (err) {
+      console.error('Error fetching subscription:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
+  const formatDate = (d: string) =>
+    new Date(d).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-gray-600">Loading...</div>
+      <div className="min-h-screen bg-[#FAFAF8] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#0B0C1E] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -65,136 +72,164 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-        <title>Dashboard - Pet.Ra</title>
+        <title>Dashboard — Pet.Ra</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              {session?.user?.image && (
-                <img
-                  src={session.user.image}
-                  alt={session.user.name || 'User'}
-                  className="w-16 h-16 rounded-full"
-                />
-              )}
-              <div>
-                <h1 className="text-2xl font-bold text-[#171739]">
-                  Welcome, {session?.user?.name || 'User'}!
-                </h1>
-                <p className="text-gray-600">{session?.user?.email}</p>
-              </div>
-            </div>
+
+      {/* Nav */}
+      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-black/[0.06]">
+        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="w-7 h-7 rounded-full bg-[#0B0C1E] flex items-center justify-center">
+              <span className="text-[#FFD447] text-xs font-black">P</span>
+            </span>
+            <span className="font-black text-[#0B0C1E] tracking-tight">Pet.Ra</span>
+          </Link>
+
+          <div className="flex items-center gap-4">
+            {session?.user?.image && (
+              <img
+                src={session.user.image}
+                alt={session.user.name ?? 'User'}
+                className="w-8 h-8 rounded-full ring-2 ring-black/[0.06]"
+              />
+            )}
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
-              className="px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-sm font-medium text-gray-500 hover:text-[#0B0C1E] transition-colors"
             >
-              Sign Out
+              Sign out
             </button>
           </div>
         </div>
+      </header>
 
-        {/* Subscription Status */}
-        {subscription ? (
-          <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-            <div className="flex items-center gap-3 mb-4">
-              <CreditCard className="w-6 h-6 text-[#FFD447]" />
-              <h2 className="text-xl font-bold text-[#171739]">Active Subscription</h2>
-            </div>
+      <main className="min-h-screen bg-[#FAFAF8] py-14 px-6">
+        <div className="max-w-5xl mx-auto">
 
-            <div className="space-y-4">
+          {/* Greeting */}
+          <motion.div {...fadeUp} className="mb-12">
+            <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-[#30358B] mb-3 block">
+              My Account
+            </span>
+            <h1 className="text-4xl font-black text-[#0B0C1E] tracking-[-0.02em] leading-none">
+              Welcome back,{' '}
+              <span className="text-[#30358B]">{session?.user?.name?.split(' ')[0] ?? 'there'}</span>
+            </h1>
+            <p className="text-sm text-gray-400 mt-2">{session?.user?.email}</p>
+          </motion.div>
+
+          {/* Subscription card */}
+          {subscription ? (
+            <motion.div
+              {...stagger(1)}
+              className="bg-[#0B0C1E] rounded-2xl p-8 mb-8 text-white"
+            >
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <span className="font-mono text-[9px] tracking-[0.25em] uppercase text-[#FFD447] mb-2 block">
+                    Active Plan
+                  </span>
+                  <h2 className="text-2xl font-black tracking-tight">
+                    {subscription.subscription_plans.name}
+                  </h2>
+                  <p className="text-white/50 text-sm mt-1">
+                    {subscription.subscription_plans.description}
+                  </p>
+                </div>
+                <span className="bg-green-400/20 text-green-300 text-xs font-semibold px-3 py-1 rounded-full border border-green-400/30 capitalize">
+                  {subscription.status}
+                </span>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                <div className="bg-white/[0.05] rounded-xl p-4">
+                  <Calendar size={18} className="text-[#FFD447] mb-2" />
+                  <p className="text-xs text-white/40 mb-0.5">Current Period</p>
+                  <p className="text-sm font-semibold text-white">
+                    {formatDate(subscription.current_period_start)} →{' '}
+                    {formatDate(subscription.current_period_end)}
+                  </p>
+                </div>
+                <div className="bg-white/[0.05] rounded-xl p-4">
+                  <CreditCard size={18} className="text-[#FFD447] mb-2" />
+                  <p className="text-xs text-white/40 mb-0.5">Monthly Rate</p>
+                  <p className="text-sm font-semibold text-white">
+                    ₹{(subscription.subscription_plans.price_monthly / 100).toLocaleString('en-IN')}
+                    /month
+                  </p>
+                </div>
+              </div>
+
               <div>
-                <h3 className="text-lg font-semibold text-[#171739] mb-2">
-                  {subscription.subscription_plans.name}
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  {subscription.subscription_plans.description}
+                <p className="text-xs text-white/40 mb-3 uppercase tracking-wider font-mono">
+                  Included features
                 </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                  <Calendar className="w-5 h-5 text-gray-600" />
-                  <div>
-                    <p className="text-sm text-gray-600">Current Period</p>
-                    <p className="font-semibold text-[#171739]">
-                      {formatDate(subscription.current_period_start)} - {formatDate(subscription.current_period_end)}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <div>
-                    <p className="text-sm text-gray-600">Status</p>
-                    <p className="font-semibold text-green-600 capitalize">
-                      {subscription.status}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <h4 className="font-semibold text-[#171739] mb-3">Plan Features:</h4>
-                <ul className="grid md:grid-cols-2 gap-2">
-                  {(subscription.subscription_plans.features as string[]).map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-gray-700">
-                      <div className="w-1.5 h-1.5 bg-[#FFD447] rounded-full"></div>
-                      {feature}
+                <ul className="grid sm:grid-cols-2 gap-2">
+                  {(subscription.subscription_plans.features as string[]).map((f, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-white/70">
+                      <span className="w-1.5 h-1.5 bg-[#FFD447] rounded-full flex-shrink-0" />
+                      {f}
                     </li>
                   ))}
                 </ul>
               </div>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-            <X className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-[#171739] mb-2">
-              No Active Subscription
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Subscribe to a plan to unlock premium features
-            </p>
-            <button
-              onClick={() => router.push('/subscriptions')}
-              className="px-6 py-3 bg-[#FFD447] text-[#171739] font-bold rounded-lg hover:bg-[#FFC820] transition-colors"
+            </motion.div>
+          ) : (
+            <motion.div
+              {...stagger(1)}
+              className="bg-white border border-black/[0.08] rounded-2xl p-10 mb-8 text-center"
             >
-              Browse Plans
-            </button>
+              <div className="w-14 h-14 rounded-2xl bg-[#FAFAF8] border border-black/[0.07] flex items-center justify-center mx-auto mb-4">
+                <CreditCard size={24} className="text-gray-400" />
+              </div>
+              <h2 className="text-xl font-black text-[#0B0C1E] mb-2">No active subscription</h2>
+              <p className="text-sm text-gray-500 mb-6 max-w-xs mx-auto">
+                Subscribe to a plan to unlock priority access, verified breeder contacts, and more.
+              </p>
+              <Link
+                href="/subscriptions"
+                className="inline-flex items-center gap-2 bg-[#FFD447] text-[#0B0C1E] font-bold px-6 py-3 rounded-xl text-sm hover:bg-[#F5C800] transition-colors"
+              >
+                Browse Plans <ArrowRight size={14} weight="bold" />
+              </Link>
+            </motion.div>
+          )}
+
+          {/* Quick Actions */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            {[
+              {
+                icon: <CreditCard size={22} />,
+                title: 'Manage Subscription',
+                desc: 'View or upgrade your current plan.',
+                href: '/subscriptions',
+              },
+              {
+                icon: <BookOpen size={22} />,
+                title: 'Pet Parent Guide',
+                desc: 'Personalised care guides for your pet.',
+                href: '/pet-parent-guide',
+              },
+            ].map((item, i) => (
+              <motion.div key={item.title} {...stagger(i + 2)}>
+                <Link
+                  href={item.href}
+                  className="flex items-start gap-4 bg-white border border-black/[0.07] rounded-2xl p-6 hover:shadow-md transition-shadow group"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-[#FFD447]/10 flex items-center justify-center text-[#0B0C1E] flex-shrink-0 group-hover:bg-[#FFD447] transition-colors">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-[#0B0C1E] mb-0.5">{item.title}</h3>
+                    <p className="text-sm text-gray-500">{item.desc}</p>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
           </div>
-        )}
-
-        {/* Quick Actions */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <button
-            onClick={() => router.push('/subscriptions')}
-            className="bg-white rounded-xl shadow-lg p-6 text-left hover:shadow-xl transition-shadow"
-          >
-            <CreditCard className="w-8 h-8 text-[#FFD447] mb-3" />
-            <h3 className="font-semibold text-[#171739] mb-2">Manage Subscription</h3>
-            <p className="text-sm text-gray-600">
-              View or change your subscription plan
-            </p>
-          </button>
-
-          <button
-            onClick={() => router.push('/pet-parent-guide')}
-            className="bg-white rounded-xl shadow-lg p-6 text-left hover:shadow-xl transition-shadow"
-          >
-            <User className="w-8 h-8 text-[#FFD447] mb-3" />
-            <h3 className="font-semibold text-[#171739] mb-2">Pet Parent Guide</h3>
-            <p className="text-sm text-gray-600">
-              Access your personalized pet care guides
-            </p>
-          </button>
         </div>
-      </div>
-    </div>
+      </main>
     </>
   );
 }
-

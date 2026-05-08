@@ -176,7 +176,7 @@ export default function AdminPanel() {
             <h1 className="text-3xl font-bold text-[#171739] mb-2">Admin Panel</h1>
             <p className="text-gray-600 mb-8">Sign in with your admin Google account to continue.</p>
             <button
-              onClick={() => signIn('google')}
+              onClick={() => signIn('google', { callbackUrl: '/mamman' })}
               className="w-full py-3 bg-[#FFD447] text-[#171739] font-bold rounded-xl hover:bg-[#F8D24B] transition-all"
             >
               Sign in with Google
