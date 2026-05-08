@@ -186,19 +186,42 @@ export default function SubscriptionsPage() {
   const [petType, setPetType] = useState<'dog' | 'cat'>('dog');
   const [billing, setBilling] = useState<'monthly' | 'yearly'>('monthly');
   const [showWaitlist, setShowWaitlist] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('Early Access');
+  const [waitlistName, setWaitlistName] = useState('');
   const [waitlistEmail, setWaitlistEmail] = useState(session?.user?.email ?? '');
   const [waitlistDone, setWaitlistDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [waitlistError, setWaitlistError] = useState('');
 
   const plans = petType === 'dog' ? DOG_PLANS : CAT_PLANS;
+
+  const openWaitlist = (planName?: string) => {
+    setSelectedPlan(planName ?? 'Early Access');
+    setWaitlistDone(false);
+    setWaitlistError('');
+    setShowWaitlist(true);
+  };
 
   const handleWaitlist = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    // Simulate API call — wire to real endpoint when ready
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitting(false);
-    setWaitlistDone(true);
+    setWaitlistError('');
+    try {
+      const res = await fetch('/api/send-waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: waitlistName, email: waitlistEmail, plan: selectedPlan }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || 'Something went wrong');
+      }
+      setWaitlistDone(true);
+    } catch (err) {
+      setWaitlistError(err instanceof Error ? err.message : 'Failed to join. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const price = (plan: Plan) =>
@@ -270,7 +293,7 @@ export default function SubscriptionsPage() {
           Subscriptions open soon — join the waitlist for early access &amp; 20% off.
         </span>
         <button
-          onClick={() => setShowWaitlist(true)}
+          onClick={() => openWaitlist()}
           className="ml-4 text-sm font-semibold text-[#FFD447] underline underline-offset-2 hover:no-underline transition-all"
         >
           Join waitlist →
@@ -441,7 +464,7 @@ export default function SubscriptionsPage() {
                   </ul>
 
                   <button
-                    onClick={() => setShowWaitlist(true)}
+                    onClick={() => openWaitlist(plan.name)}
                     className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all ${
                       plan.highlight
                         ? 'bg-[#FFD447] text-[#0B0C1E] hover:bg-[#F5C800]'
@@ -602,7 +625,7 @@ export default function SubscriptionsPage() {
                 Waitlist members get 20% off their first 3 months, no credit card needed.
               </p>
               <button
-                onClick={() => setShowWaitlist(true)}
+                onClick={() => openWaitlist()}
                 className="inline-flex items-center gap-2 bg-[#FFD447] text-[#0B0C1E] font-bold px-8 py-4 rounded-xl hover:bg-[#F5C800] transition-colors text-sm"
               >
                 <Sparkle size={16} weight="fill" />
@@ -631,7 +654,7 @@ export default function SubscriptionsPage() {
               className="bg-white rounded-2xl p-8 w-full max-w-md shadow-2xl relative"
             >
               <button
-                onClick={() => { setShowWaitlist(false); setWaitlistDone(false); }}
+                onClick={() => { setShowWaitlist(false); setWaitlistDone(false); setWaitlistError(''); }}
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors"
               >
                 <X size={20} />
@@ -645,10 +668,20 @@ export default function SubscriptionsPage() {
                   <h3 className="text-2xl font-black text-[#0B0C1E] tracking-tight mb-1">
                     Join the waitlist
                   </h3>
-                  <p className="text-sm text-gray-500 mb-6">
+                  <p className="text-sm text-gray-500 mb-1">
                     Get 20% off your first 3 months. No spam, ever.
                   </p>
-                  <form onSubmit={handleWaitlist} className="space-y-4">
+                  {selectedPlan !== 'Early Access' && (
+                    <p className="text-xs font-semibold text-[#30358B] mb-4">
+                      Plan: {selectedPlan}
+                    </p>
+                  )}
+                  {waitlistError && (
+                    <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl text-sm text-red-600">
+                      {waitlistError}
+                    </div>
+                  )}
+                  <form onSubmit={handleWaitlist} className="space-y-4 mt-4">
                     <div>
                       <label className="block text-xs font-semibold text-gray-600 mb-1.5">
                         Your name
@@ -656,6 +689,8 @@ export default function SubscriptionsPage() {
                       <input
                         type="text"
                         required
+                        value={waitlistName}
+                        onChange={(e) => setWaitlistName(e.target.value)}
                         placeholder="Arjun Nair"
                         className="w-full border border-black/[0.12] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0B0C1E] transition-all outline-none"
                       />
@@ -672,22 +707,6 @@ export default function SubscriptionsPage() {
                         placeholder="you@example.com"
                         className="w-full border border-black/[0.12] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0B0C1E] transition-all outline-none"
                       />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-600 mb-1.5">
-                        Interested in
-                      </label>
-                      <div className="flex gap-2">
-                        {['Dogs', 'Cats', 'Both'].map((opt) => (
-                          <label
-                            key={opt}
-                            className="flex items-center gap-1.5 cursor-pointer text-sm text-gray-600"
-                          >
-                            <input type="radio" name="petpref" value={opt.toLowerCase()} defaultChecked={opt === 'Both'} className="accent-[#0B0C1E]" />
-                            {opt}
-                          </label>
-                        ))}
-                      </div>
                     </div>
                     <button
                       type="submit"
@@ -706,7 +725,7 @@ export default function SubscriptionsPage() {
                     We'll email you at <strong>{waitlistEmail}</strong> the moment we launch — with your 20% discount code.
                   </p>
                   <button
-                    onClick={() => { setShowWaitlist(false); setWaitlistDone(false); }}
+                    onClick={() => { setShowWaitlist(false); setWaitlistDone(false); setWaitlistError(''); }}
                     className="bg-[#FFD447] text-[#0B0C1E] font-bold px-6 py-3 rounded-xl text-sm hover:bg-[#F5C800] transition-colors"
                   >
                     Back to plans
