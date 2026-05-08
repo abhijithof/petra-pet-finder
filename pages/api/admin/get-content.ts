@@ -1,6 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../auth/[...nextauth]';
+
+function isAdmin(email: string): boolean {
+  const adminEmails = (process.env.ADMIN_EMAILS || '')
+    .split(',')
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  return adminEmails.includes(email.toLowerCase());
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,6 +18,14 @@ export default async function handler(
 ) {
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method not allowed' });
+  }
+
+  const session = await getServerSession(req, res, authOptions);
+  if (!session?.user?.email) {
+    return res.status(401).json({ message: 'Unauthorised' });
+  }
+  if (!isAdmin(session.user.email)) {
+    return res.status(403).json({ message: 'Forbidden' });
   }
 
   try {

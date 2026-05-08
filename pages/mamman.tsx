@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 interface ContentData {
   hero: {
@@ -29,9 +29,8 @@ interface ContentData {
 }
 
 export default function AdminPanel() {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
+  const { data: session, status } = useSession();
+  const [accessDenied, setAccessDenied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'hero' | 'trust' | 'testimonials' | 'plans' | 'petfinder'>('hero');
   const [contentData, setContentData] = useState<ContentData>({
@@ -102,31 +101,19 @@ export default function AdminPanel() {
 
   const [savedStatus, setSavedStatus] = useState('');
 
-  // Simple client-side auth (replace with proper auth in production)
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Change this password to something secure!
-    if (password === 'mamman2025') {
-      setIsAuthenticated(true);
-      localStorage.setItem('admin_auth', 'true');
-    } else {
-      alert('Incorrect password!');
-    }
-  };
-
   useEffect(() => {
-    // Check if already logged in
-    if (localStorage.getItem('admin_auth') === 'true') {
-      setIsAuthenticated(true);
+    if (status === 'authenticated') {
+      loadContent();
     }
-    
-    // Load saved content
-    loadContent();
-  }, []);
+  }, [status]);
 
   const loadContent = async () => {
     try {
       const response = await fetch('/api/admin/get-content');
+      if (response.status === 401 || response.status === 403) {
+        setAccessDenied(true);
+        return;
+      }
       if (response.ok) {
         const data = await response.json();
         if (data.content) {
@@ -165,46 +152,59 @@ export default function AdminPanel() {
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('admin_auth');
-    router.push('/');
+    signOut({ callbackUrl: '/' });
   };
 
-  if (!isAuthenticated) {
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#171739] to-[#252756] flex items-center justify-center">
+        <div className="text-white text-lg">Loading...</div>
+      </div>
+    );
+  }
+
+  if (status === 'unauthenticated') {
     return (
       <>
         <Head>
           <title>Admin Login - Pet.Ra</title>
+          <meta name="robots" content="noindex, nofollow" />
         </Head>
         <div className="min-h-screen bg-gradient-to-br from-[#171739] to-[#252756] flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md">
-            <div className="text-center mb-8">
-              <img src="/petra-logo-blue-2.png" alt="Pet.Ra" className="h-16 mx-auto mb-4" />
-              <h1 className="text-3xl font-bold text-[#171739]">Admin Panel</h1>
-              <p className="text-gray-600 mt-2">Enter password to continue</p>
-            </div>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-[#171739] mb-2">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#FFD447] focus:outline-none"
-                  placeholder="Enter admin password"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full py-3 bg-[#FFD447] text-[#171739] font-bold rounded-xl hover:bg-[#F8D24B] transition-all"
-              >
-                Login
-              </button>
-            </form>
+          <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md text-center">
+            <img src="/petra-logo-blue-2.png" alt="Pet.Ra" className="h-16 mx-auto mb-4" />
+            <h1 className="text-3xl font-bold text-[#171739] mb-2">Admin Panel</h1>
+            <p className="text-gray-600 mb-8">Sign in with your admin Google account to continue.</p>
+            <button
+              onClick={() => signIn('google')}
+              className="w-full py-3 bg-[#FFD447] text-[#171739] font-bold rounded-xl hover:bg-[#F8D24B] transition-all"
+            >
+              Sign in with Google
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (accessDenied) {
+    return (
+      <>
+        <Head>
+          <title>Access Denied - Pet.Ra</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Head>
+        <div className="min-h-screen bg-gradient-to-br from-[#171739] to-[#252756] flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md text-center">
+            <img src="/petra-logo-blue-2.png" alt="Pet.Ra" className="h-16 mx-auto mb-4" />
+            <h1 className="text-3xl font-bold text-[#171739] mb-2">Access Denied</h1>
+            <p className="text-gray-600 mb-8">Your account ({session?.user?.email}) does not have admin access.</p>
+            <button
+              onClick={() => signOut({ callbackUrl: '/' })}
+              className="w-full py-3 bg-gray-200 text-[#171739] font-bold rounded-xl hover:bg-gray-300 transition-all"
+            >
+              Sign Out
+            </button>
           </div>
         </div>
       </>
